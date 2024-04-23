@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 });
 
 // Vart användaren kommer efter att ha loggat in, vilket är flödesidan såklart!
-app.post("/login", (req, res) => {
+app.post("/view", (req, res) => {
   const { username } = req.body;
   res.render("index", { username });
 });
