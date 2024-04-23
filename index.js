@@ -9,10 +9,12 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 const PORT = process.env.PORT || 5000;
 
+// Huvudsidan för att logga in
 app.get("/", (req, res) => {
   res.render("login");
 });
 
+// Vart användaren kommer efter att ha loggat in, vilket är flödesidan såklart!
 app.post("/login", (req, res) => {
   const { username } = req.body;
   res.render("index", { username });
