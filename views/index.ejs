@@ -7,64 +7,42 @@
     <link rel="stylesheet" href="css/index.css" />
   </head>
   <body>
-    <div class="logo">
-      <h3>StU</h3>
-    </div>
-
-    <div class="navbar">
-      <ul>
-        <li><img src="assets/home.svg" alt="#" /><a href="#">Hem</a></li>
-        <li><img src="assets/projekt.svg" alt="#" /><a href="#">Projekt</a></li>
-        <li><img src="assets/campus.svg" alt="#" /><a href="#">Campus</a></li>
-        <li><img src="assets/message-circle.svg" alt="#" /><a href="#">Chatt</a></li>
-        <li><img src="assets/plus-circle.svg" alt="#" /><a href="#">Skapa inlägg</a></li>
-        <li><img src="assets/home.svg" alt="#" /><a href="#">Profil</a></li>
-      </ul>
-    </div>
-
-    <div class="filter">
-      <button class="campusBTN" onclick="">Campus</button>
-      <button class="vannerBTN" onclick="">Vänner</button>
-    </div>
-
-    <div class="posts">
-      <div class="post">
-        <div class="post-author">
-          <img src="#" alt="#" />
-          <h3>Användarnamn</h3>
-        </div>
-
-        <img src="#" alt="Bild" />
-        <p>Bild information/text</p>
-
-        <div class="post-actions">
-          <button class="like">Like</button>
-          <button class="comment">Kommentera</button>
-        </div>
-
-        <ul class="comments">
-          <li><p>Användarnamn: kommentar</p></li>
-        </ul>
+    <div class="left-menu">
+      <div class="logo">
+        <h3>StU</h3>
       </div>
-
-      <div class="post">
-        <div class="post-author">
-          <img src="#" alt="#" />
-          <h3>Användarnamn</h3>
-        </div>
-
-        <img src="#" alt="Bild" />
-        <p>Bild information/text</p>
-
-        <div class="post-actions">
-          <button class="like">Like</button>
-          <button class="comment">Kommentera</button>
-        </div>
-
-        <ul class="comments">
-          <li><p>Användarnamn: kommentar</p></li>
+      <div class="navbar">
+        <ul>
+          dd
+          <li><img src="assets/home.svg" alt="#" /><a href="#">Hem</a></li>
+          <li>
+            <img src="assets/projekt.svg" alt="#" /><a href="#">Projekt</a>
+          </li>
+          <li><img src="assets/campus.svg" alt="#" /><a href="#">Campus</a></li>
+          <li>
+            <img src="assets/message-circle.svg" alt="#" /><a href="#">Chatt</a>
+          </li>
+          <li>
+            <img src="assets/plus-circle.svg" alt="#" /><a href="#"
+              >Skapa inlägg</a
+            >
+          </li>
+          <li><img src="assets/home.svg" alt="#" /><a href="#">Profil</a></li>
         </ul>
       </div>
     </div>
+
+    <div class="main-content">
+      <div class="filter">
+        <button class="campusBTN" onclick="">CAMPUS</button>
+        <button class="vannerBTN" onclick="">VÄNNER</button>
+      </div>
+
+      <div class="posts">
+        <!-- Posts från js/posts.js -->
+      </div>
+    </div>
+    <script src="js/script.js"></script>
+    <script src="js/posts.js" type="module"></script>
   </body>
 </html>
