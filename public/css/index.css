@@ -7,9 +7,11 @@
 .left-menu {
   width: 20%;
   height: 100%;
-  background-color: #aeefff;
+  background-color: #e0e0e0;
+  /*background-color: #aeefff;*/
   position: fixed;
 }
+/*Loggan*/
 #stuLogo {
   display: block;
   width: 60%;

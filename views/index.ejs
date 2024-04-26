@@ -7,21 +7,8 @@
     <link rel="stylesheet" href="css/index.css" />
   </head>
   <body>
-    <div class="left-menu">
-      <h1><img id="stuLogo" src="assets/logga.svg" alt="Logotyp för StU"></h1>
-      
-      <div class="navbar">
-        <ul>
-          <li><img src="assets/home.svg" alt="Ett hus" /><a href="#">Hem</a></li>
-          <li><img src="assets/projekt.svg" alt="En portfölj" /><a href="#">Projekt</a></li>
-          <li><img src="assets/campus.svg" alt="En studenthatt" /><a href="#">Campus</a></li>
-          <li><img src="assets/message-circle.svg" alt="En chattbubbla" /><a href="#">Chatt</a></li>
-          <li><img src="assets/plus-circle.svg" alt="Ett plus" /><a href="#">Skapa inlägg</a></li>
-          <li id="profilnav"><img src="#" /><a href="#">Profil</a></li>
-        </ul>
-      </div>
-    
-    </div>
+    <!--Laddar in nav-menyn-->
+    <%- include('reuse/huvudmeny') %>
 
     <div class="main-content">
       <div class="filter">
@@ -33,6 +20,7 @@
         <!-- Posts från js/posts.js -->
       </div>
     </div>
+
     <script src="js/script.js"></script>
     <script src="js/posts.js" type="module"></script>
   </body>

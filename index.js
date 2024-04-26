@@ -5,8 +5,11 @@ const app = express();
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-
 app.use(bodyParser.json());
+
+const routes = require('./routes');
+app.use('/', routes);
+
 const PORT = process.env.PORT || 5000;
 
 // Huvudsidan för att logga in

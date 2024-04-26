@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Skapa Inlägg</title>
+        <link rel="stylesheet" href="css/skapainlagg.css" />
+        <link rel="stylesheet" href="css/index.css" />
+    </head>
+    <body>
+        <!--Ladda in nav-menyn-->
+        <%- include('reuse/huvudmeny') %>
+
+        <!--Container för att skapa och posta ett inlägg-->
+        <div class="skapainlagg-container">
+            <div class="skapainlagg-box">
+
+            <!--Kryss, knapp för att stänga sidan och ta sig tillbaka till "Hem"-->
+            <div class="close-button">
+                <a href="/" style="text-decoration: none; color: black;"><span style="font-size: 24px;">&#10006;</span></a>
+            </div>
+
+                <h2>Skapa inlägg</h2>
+                <!--formulär för att skapa ett inlägg-->
+                    <form action="/posta-inlagg" method="POST" enctype="multipart/form-data">
+                        <div class="skapa-inlagg-grupp">  
+                        <!--Ladda upp en fil = bild--> 
+                        <label for="bild">Ladda upp bild:</label>
+                        <input type="file" id="bild" name="bild" accept="image/*" required><br><br>
+                        </div>
+                        
+                        <!--Textfält-->
+                        <div class="skapa-inlagg-grupp">
+                            <label for="text">Skriv text:</label>
+                            <textarea id="text" name="text" rows="4" cols="50"></textarea>
+                        </div>
+                        
+                        <!--Val att dela med Campus eller Vänner-->
+                        <div class="skapa-inlagg-grupp">
+                            <label for="val">Campus eller vänner:</label>
+                            <select id="val" name="val" required>
+                                <option value="campus">Campus</option>
+                                <option value="vänner">Vänner</option>
+                            </select>
+                        </div>
+                    <!--Knapp för att posta-->
+                    <button id="postainlagg-knapp" type="submit" class="btn">Posta inlägg</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
