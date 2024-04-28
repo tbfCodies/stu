@@ -1,0 +1,126 @@
+{
+    "posts": [
+        {
+            "id": 1,
+            "userId": 1,
+            "username": "Alice",
+            "profilePicture": "assets/profile/profile-placeholder-one.jpg",
+            "image": "assets/posts/post-placeholder-one.jpg",
+            "info": "Alice's post description here...",
+            "createdAt": "2024-04-20T00:00:00.000Z",
+            "likes": 5,
+            "comments": [
+                {
+                    "userId": 2,
+                    "username": "Bob",
+                    "text": "Great post, Alice!",
+                    "commentedAt": "2024-04-28T11:30:00.000Z"
+                },
+                {
+                    "userId": 1,
+                    "username": "Alice",
+                    "text": "Wow, Ben! That looks incredible! ",
+                    "commentedAt": "2024-04-28T11:30:00.000Z"
+                },
+                {
+                    "userId": 2,
+                    "username": "Bob",
+                    "text": "Great post, Alice!",
+                    "commentedAt": "2024-04-28T11:30:00.000Z"
+                },
+                {
+                    "userId": 1,
+                    "username": "Alice",
+                    "text": "Wow, Ben! That looks incredible! ",
+                    "commentedAt": "2024-04-28T11:30:00.000Z"
+                },
+                {
+                    "userId": 2,
+                    "username": "Bob",
+                    "text": "Great post, Alice!",
+                    "commentedAt": "2024-04-28T11:30:00.000Z"
+                },
+                {
+                    "userId": 1,
+                    "username": "Alice",
+                    "text": "Wow, Ben! That looks incredible! ",
+                    "commentedAt": "2024-04-28T11:30:00.000Z"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "userId": 3,
+            "username": "Ben",
+            "profilePicture": "assets/profile/profile-placeholder-two.jpg",
+            "image": "assets/posts/post-placeholder-two.jpg",
+            "info": "Just witnessed the most amazing aurora borealis in Luleå!  #Sweden #NorthernLights",
+            "createdAt": "2024-04-28T11:30:00.000Z",
+            "likes": 12,
+            "comments": [
+                {
+                    "userId": 1,
+                    "username": "Alice",
+                    "text": "Wow, Ben! That looks incredible! ",
+                    "commentedAt": "2024-04-28T11:30:00.000Z"
+                },
+                {
+                    "userId": 4,
+                    "username": "Charlie",
+                    "text": "Adding this to my travel bucket list! ",
+                    "commentedAt": "2024-04-28T11:30:00.000Z"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "userId": 2,
+            "username": "Bob",
+            "profilePicture": "assets/profile/profile-placeholder-three.jpg",
+            "image": "assets/posts/post-placeholder-three.jpg",
+            "info": "Looking for recommendations for the best fika spots in Luleå. Any suggestions? ☕️",
+            "createdAt": "2024-04-28T11:30:00.000Z",
+            "likes": 3,
+            "comments": [
+                {
+                    "userId": 1,
+                    "username": "Alice",
+                    "text": "Hey Bob, I love going to 'Fika by Maja'! They have delicious pastries ",
+                    "commentedAt": "2024-04-28T11:30:00.000Z"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "userId": 4,
+            "username": "Charlie",
+            "profilePicture": "assets/profile/profile-placeholder-one.jpg",
+            "image": "assets/posts/post-placeholder-four.jpg",
+            "info": "What are your favorite things to do in Luleå? I'm here for the weekend and open to exploring! ",
+            "createdAt": "2024-04-28T11:30:00.000Z",
+            "likes": 0,
+            "comments": []
+        },
+        {
+            "id": 5,
+            "userId": 5,
+            "username": "David",
+            "profilePicture": "assets/profile/profile-placeholder-two.jpg",
+            "image": "assets/posts/post-placeholder-one.jpg",
+            "info": "\"The greatest glory in living lies not in never falling, but in rising every time we fall.\"",
+            "createdAt": "2024-04-28T11:30:00.000Z",
+            "likes": 7,
+            "comments": []
+        },
+        {
+            "id": 6,
+            "userId": 1,
+            "profilePicture": "assets/profile/profile-placeholder-three.jpg",
+            "image": "assets/posts/post-placeholder-four.jpg",
+            "info": "Planning a picnic in Stadsparken this weekend. What kind of food should I bring? ",
+            "createdAt": "2024-04-28T11:30:00.000Z",
+            "likes": 2,
+            "comments": []
+        }
+    ]
+}
