@@ -1,8 +1,8 @@
 const commentIcon = document.querySelector(".comment-icon");
 commentIcon.addEventListener("click", (event) => {
-    const parentWithDataId = event.currentTarget.closest("[data-comment-id]");
-    if (parentWithDataId) {
-        const id = parentWithDataId.getAttribute("data-comment-id");
+    const parent = event.currentTarget.closest("[data-comment-id]");
+    if (parent) {
+        const id = parent.getAttribute("data-comment-id");
         comment(id);
     }
 });
