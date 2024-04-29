@@ -1,14 +1,8 @@
-
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-router.get('/skapainlagg', (req, res) => {
-  res.render('skapainlagg');
-});
-
-// Route för "Hem"
-router.get('/index', (req, res) => {
-  res.render('index'); 
+router.get("/skapainlagg", (req, res) => {
+    res.render("skapainlagg");
 });
 
 module.exports = router;

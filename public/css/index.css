@@ -3,6 +3,126 @@
     padding: 0;
 }
 
+.popup-menu {
+    display: none;
+    height: 500px;
+    width: 750px;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.8);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 20px;
+    color: rgba(255, 255, 255, 1);
+}
+
+.popup-menu .close-popup {
+    position: sticky;
+    top: 0;
+    left: 10px;
+    box-sizing: border-box;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 999;
+}
+
+.popup-menu .close-popup:hover {
+    transform: scale(1.04);
+    cursor: pointer;
+}
+
+.popup-menu .right-section {
+    height: 90%;
+    width: 50%;
+    right: 1%;
+    position: fixed;
+    top: 14%; /* Stick the left section to the top of its containing block */
+    box-sizing: border-box;
+    margin-top: 5px;
+    overflow: auto;
+}
+
+.popup-menu .right-section .popup-user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.popup-menu .right-section .popup-user-info p {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.popup-menu .right-section p {
+    margin-top: 0;
+    color: #000;
+    overflow: auto;
+}
+
+.popup-menu .left-section {
+    width: 50%;
+    left: 0;
+    position: sticky;
+    top: 4%; /* Stick the left section to the top of its containing block */
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.popup-menu input[type="text"] {
+    border: 1px solid #ccc;
+    padding: 8px;
+    height: 50%;
+    width: calc(100% - 20px); /* Adjusted width to account for padding */
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.popup-menu button[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: calc(100% - 20px); /* Adjusted width to account for padding */
+}
+
+.popup-menu button[type="submit"]:hover {
+    background-color: #45a049;
+    transform: scale(1.02);
+}
+
+.popup-menu .comment-section {
+    margin-bottom: 20px;
+}
+
+.popup-menu .user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.popup-menu .username {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.popup-menu .comment-content {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+}
+
 /* Menyn till vänster*/
 .left-menu {
     width: 20%;

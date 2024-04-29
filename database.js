@@ -1,29 +1,32 @@
-const mysql = require('mysql2');
+const mysql = require("mysql2");
 // create a new MySQL connection
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Mysql123',
-  database: 'socialmediaapp'
+    host: "localhost",
+    user: "root",
+    password: "Mysql123",
+    database: "socialmediaapp",
 });
 // connect to the MySQL database
-connection.connect((error) => {
-  if (error) {
-    console.error('Error connecting to MySQL database:', error);
-  } else {
-    console.log('Connected to MySQL database!');
-  }
-  // Utför en SELECT-fråga för att hämta innehållet i "Users"-tabellen
-  connection.query('SELECT * FROM Users', (err, results, fields) => {
-    if (err) {
-      console.error('Fel vid hämtning av data från "Users"-tabellen:', err);
-    } else {
-      // Visa resultatet i konsolen
-      console.log('Innehåll i "Users"-tabellen:');
-      console.log(results);
-    }
-
-});
+function connectDB(db) {
+    db.connect((error) => {
+        if (error) {
+            console.error("Error connecting to MySQL database:", error);
+        } else {
+            console.log("Connected to MySQL database!");
+        }
+    });
+    return db;
+}
 // close the MySQL connection
-connection.end();
-});
+function closeDB(db) {
+    db.end();
+    return db;
+}
+
+module.exports = {
+    connection,
+    connectDB,
+    closeDB,
+};
+
+// const { connection, connectDB, closeDB } = require("./database");

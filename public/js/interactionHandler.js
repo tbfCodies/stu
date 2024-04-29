@@ -1,43 +1,98 @@
-const commentIcon = document.querySelector(".comment-icon");
-commentIcon.addEventListener("click", (event) => {
-    const parent = event.currentTarget.closest("[data-comment-id]");
-    if (parent) {
-        const id = parent.getAttribute("data-comment-id");
-        comment(id);
-    }
-});
-
-const likeIcon = document.querySelector(".likes-icon");
-likeIcon.addEventListener("click", (event) => {
-    const parent = event.currentTarget.closest("[data-like-id]");
-    if (parent) {
-        const id = parent.getAttribute("data-like-id");
+const likeIcons = document.querySelectorAll(".interaction-like");
+likeIcons.forEach((likeIcon) => {
+    likeIcon.addEventListener("click", (e) => {
+        const id = e.currentTarget.closest(".post").id;
         like(id);
-    }
+    });
 });
 
-/*
-  @description: Fetches the post with the given id and adds the comment to the post
-  @param: id - the id of the post
-  @param: user - the user who is commenting
-  @param: comment - the comment to be added to the post
-  @return: the updated post
-  @run: location.reload();
-*/
-const comment = (id) => {
-    console.log(id);
-    const commentId = document.querySelector(`[data-comment-id="${id}"]`);
-    console.log(commentId);
+const commentIcons = document.querySelectorAll(".interaction-comment");
+commentIcons.forEach((commentIcon) => {
+    commentIcon.addEventListener("click", (e) => {
+        const id = e.currentTarget.closest(".post").id;
+        comment(id);
+    });
+});
+
+const setCookie = (name, value, days) => {
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + days);
+    const cookieValue = `${name}=${value}; expires=${expirationDate.toUTCString()}; path=/`;
+    document.cookie = cookieValue;
 };
 
-/*
-    @description: Fetches the post with the given id and adds the like to the post
-    @param: id - the id of the post
-    @param: user - the user who is liking the post
-    @return: the updated post
-    @run: location.reload();
-*/
+const comment = (id) => {
+    // popup meny
+    const popup = document.querySelector(".popup-menu");
+    popup.style.display = "block";
+    document.body.style.overflow = "hidden";
+
+    // close button
+    const closeButton = document.querySelector(".close-popup");
+    closeButton.addEventListener("click", () => {
+        popup.style.display = "none";
+        document.body.style.overflow = "auto";
+    });
+
+    // Set the PostID in the popup for reference
+    popup.dataset.postId = id;
+
+    //setCookie("PostID", id, 1);
+    document.cookie = `PostID=${id}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/; domain=localhost`;
+
+    const form = popup.querySelector(".popup-form");
+    form.addEventListener("submit", (e) => {
+        e.preventDefault(true);
+        const comment = form.querySelector("input").value;
+        if (comment !== "") {
+            const username = "Alfred"; // FIXME: get username from login
+            const postId = popup.dataset.postId; // Retrieve the PostID from the popup
+            commentPost(postId, username, comment);
+
+            // clear input
+            form.querySelector("input").value = "";
+            popup.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    });
+};
+
+const commentPost = (id, username, comment) => {
+    fetch("/comment", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, username, comment }),
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Failed to comment the post");
+            }
+            console.log("Post commented successfully");
+        })
+        .catch((error) => {
+            console.error("Error commenting the post:", error);
+        });
+};
+
 const like = (id) => {
-    const likeId = document.querySelector(`[data-like-id="${id}"]`);
-    console.log(likeId);
+    const username = "Alfred"; // FIXME: get username from login
+
+    fetch("/like", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, username }),
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Failed to like the post");
+            }
+            console.log("Post liked successfully");
+        })
+        .catch((error) => {
+            console.error("Error liking the post:", error);
+        });
 };
