@@ -14,19 +14,19 @@ const PORT = process.env.PORT || 5000;
 
 // Huvudsidan för att logga in
 app.get("/", (req, res) => {
-  res.render("login");
+    res.render("login");
 });
 
 app.get("/view", (req, res) => {
-  res.render("index");
+    res.render("index");
 });
 
 // Vart användaren kommer efter att ha loggat in, vilket är flödesidan såklart!
 app.post("/view", (req, res) => {
-  const { username } = req.body;
-  res.render("index", { username });
+    const { username } = req.body;
+    res.render("index", { username });
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT} - http://localhost:${PORT}`);
+    console.log(`Server is running on port ${PORT} - http://localhost:${PORT}`);
 });

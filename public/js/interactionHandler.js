@@ -7,6 +7,15 @@ commentIcon.addEventListener("click", (event) => {
     }
 });
 
+const likeIcon = document.querySelector(".likes-icon");
+likeIcon.addEventListener("click", (event) => {
+    const parent = event.currentTarget.closest("[data-like-id]");
+    if (parent) {
+        const id = parent.getAttribute("data-like-id");
+        like(id);
+    }
+});
+
 /*
   @description: Fetches the post with the given id and adds the comment to the post
   @param: id - the id of the post
@@ -28,6 +37,7 @@ const comment = (id) => {
     @return: the updated post
     @run: location.reload();
 */
-const like = (id, user) => {
-    return;
+const like = (id) => {
+    const likeId = document.querySelector(`[data-like-id="${id}"]`);
+    console.log(likeId);
 };
