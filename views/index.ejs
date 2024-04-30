@@ -27,17 +27,9 @@
                     </form>
                 </div>
                 <div class="right-section">
-                    <% data.post.forEach(function(post) { %> <%
-                    post.comments.forEach(function(comment) { %>
                     <div class="comment-section">
-                        <div class="popup-user-info">
-                            <p class="username"><%= comment.Username %></p>
-                        </div>
-                        <div class="comment-content">
-                            <p><%= comment.Comment %></p>
-                        </div>
+    
                     </div>
-                    <% }); %> <% }); %>
                 </div>
             </div>
 

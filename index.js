@@ -66,7 +66,10 @@ app.get("/feed", (req, res) => {
 // Vart användaren kommer efter att ha loggat in, vilket är flödesidan såklart!
 app.post("/feed", (req, res) => {
     const { username } = req.body;
-    res.render("index", { username });
+    res.render("index", {
+        username,
+        data: postData,
+    });
 });
 
 app.listen(PORT, () => {
