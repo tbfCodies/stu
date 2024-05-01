@@ -1,7 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const multer = require('multer');
+const multer = require("multer");
 
 const postData = require("./public/temp/data.json");
 const app = express();
@@ -24,33 +24,36 @@ app.use("/", routes);
 //Posta det skapade inlägget till databasen
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './uploads/');
+        cb(null, "./uploads/");
     },
     filename: function (req, file, cb) {
         cb(null, new Date().toISOString() + file.originalname);
-    }
+    },
 });
 const upload = multer({ storage: storage });
 
 //Queryn kanske behöver ändras
 
-app.post('/posta-inlagg', upload.single('bild'), (req, res) => {
-    const { text, val, 'dela-foretag': delaForetag } = req.body;
+app.post("/posta-inlagg", upload.single("bild"), (req, res) => {
+    const { text, val, "dela-foretag": delaForetag } = req.body;
 
     const file = req.file ? req.file : null;
 
     const query = `INSERT INTO posts (PostID, UserID, Image, Info, Choice, CreatedAt) VALUES (?,?,?,?,?, CURRENT_TIMESTAMP)`;
 
-    connection.query(query, [postId, userId, file.path, text, val, delaForetag], (error, results) => {
-        if (error) {
-            console.error("Error inserting post into database: ", error);
-            res.status(500).send("Error inserting post.");
-        } else {
-            res.send('Post added successfully!');
+    connection.query(
+        query,
+        [postId, userId, file.path, text, val, delaForetag],
+        (error, results) => {
+            if (error) {
+                console.error("Error inserting post into database: ", error);
+                res.status(500).send("Error inserting post.");
+            } else {
+                res.send("Post added successfully!");
+            }
         }
-    });
+    );
 });
-
 
 const PORT = process.env.PORT || 5000;
 
@@ -65,10 +68,27 @@ app.post("/comment", (req, res) => {
     const { id, username, comment } = req.body;
     console.log(id, username, comment);
 
-    // query to insert comment
-    // id = inlägg id
-    // username = användare som kommenterar
-    // comment = kommentar
+    conn = connectDB(connection);
+
+    // Insert comment into database
+    // id = inläggets id
+    // username = användarens namn
+    // comment = kommentaren
+    const commentQuery = ``;
+    conn.query(
+        commentQuery,
+        [id, username, comment],
+        (error, results, fields) => {
+            if (error) {
+                console.error(
+                    "Error inserting comment into database" + error.stack
+                );
+            }
+            console.log("Inserted comment into database");
+        }
+    );
+
+    closeDB(conn);
 });
 
 app.post("/like", (req, res) => {
