@@ -6,6 +6,9 @@ const multer = require("multer");
 const postData = require("./public/temp/data.json");
 const app = express();
 
+// Avkommentera om du vill använda databasen
+// const { connection, connectDB, closeDB } = require("./database");
+
 app.use(
     session({
         secret: "stu",
@@ -56,8 +59,6 @@ app.post("/posta-inlagg", upload.single("bild"), (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-
-//const { connection, connectDB, closeDB } = require("./database");
 
 // Huvudsidan för att logga in
 app.get("/", (req, res) => {
