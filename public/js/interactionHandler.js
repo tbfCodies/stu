@@ -49,8 +49,13 @@ function loadComments(id) {
                 createCommentText.classList.add(`comment`);
                 createComment.appendChild(createCommentText);
 
+                const createCommentDate = document.createElement("p");
+                createCommentDate.classList.add(`date`);
+                createComment.appendChild(createCommentDate);
+
                 createCommentUser.innerText = comment.Username;
                 createCommentText.innerText = comment.Comment;
+                createCommentDate.innerText = comment.CommentedAt;
             });
         })
         .catch((error) => {
