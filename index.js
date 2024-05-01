@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
+const multer = require('multer');
 
 const postData = require("./public/temp/data.json");
 const app = express();
@@ -19,6 +20,38 @@ app.use(bodyParser.json());
 
 const routes = require("./routes");
 app.use("/", routes);
+
+/* Vet ej om detta fungerar???, meningen att det ska posta det skapade inlägget till databasen
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, new Date().toISOString() + file.originalname);
+    }
+});
+const upload = multer({ storage: storage });
+
+//Posta inlägget?? Queryn kanske är fel
+
+app.post('/posta-inlagg', upload.single('bild'), (req, res) => {
+    const { text, val, 'dela-foretag': delaForetag } = req.body;
+
+    const file = req.file;
+
+    const query = `INSERT INTO posts (PostID, UserID, Image, Info, Choice, CreatedAt) VALUES (?,?,?,?,?, CURRENT_TIMESTAMP)`;
+
+    connection.query(query, [postId, userId, file.path, text, val, delaForetag], (error, results) => {
+        if (error) {
+            console.error("Error inserting post into database: ", error);
+            res.status(500).send("Error inserting post.");
+        } else {
+            res.send('Post added successfully!');
+        }
+    });
+});
+*/
 
 const PORT = process.env.PORT || 5000;
 
