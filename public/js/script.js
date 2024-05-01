@@ -15,3 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Default button set to active: " + campusButton.textContent);
   }
 });
+
+//Funktion för att öppna menyn till höger
+function openSuggestionsMeny() {
+  document.getElementById("suggestions").style.width = "12%";
+}
+//Funktion för att stänga menyn till höger
+function closeSuggestionsMeny() {
+  document.getElementById("suggestions").style.width = "0";
+}

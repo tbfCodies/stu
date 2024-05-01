@@ -21,8 +21,7 @@ app.use(bodyParser.json());
 const routes = require("./routes");
 app.use("/", routes);
 
-/* Vet ej om detta fungerar???, meningen att det ska posta det skapade inlägget till databasen
-
+//Posta det skapade inlägget till databasen
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/');
@@ -33,12 +32,12 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-//Posta inlägget?? Queryn kanske är fel
+//Queryn kanske behöver ändras
 
 app.post('/posta-inlagg', upload.single('bild'), (req, res) => {
     const { text, val, 'dela-foretag': delaForetag } = req.body;
 
-    const file = req.file;
+    const file = req.file ? req.file : null;
 
     const query = `INSERT INTO posts (PostID, UserID, Image, Info, Choice, CreatedAt) VALUES (?,?,?,?,?, CURRENT_TIMESTAMP)`;
 
@@ -51,7 +50,7 @@ app.post('/posta-inlagg', upload.single('bild'), (req, res) => {
         }
     });
 });
-*/
+
 
 const PORT = process.env.PORT || 5000;
 
