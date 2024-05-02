@@ -7,8 +7,8 @@ const postData = require("./public/temp/data.json");
 const app = express();
 
 // Avkommentera om du vill använda databasen
-// const { connection, connectDB, closeDB } = require("./database");
-
+const { connection, connectDB, closeDB } = require("./database");
+conn = connectDB(connection); // Connect to the database
 app.use(
     session({
         secret: "stu",
@@ -42,11 +42,11 @@ app.post("/posta-inlagg", upload.single("bild"), (req, res) => {
 
     const file = req.file ? req.file : null;
 
-    const query = `INSERT INTO posts (PostID, UserID, Image, Info, Choice, CreatedAt) VALUES (?,?,?,?,?, CURRENT_TIMESTAMP)`;
+    const query = `INSERT INTO posts (UserID, Image, Info, Choice) VALUES (?,?,?,?)`;
 
     connection.query(
         query,
-        [postId, userId, file.path, text, val, delaForetag],
+        [userID, file.path, text, val, delaForetag],
         (error, results) => {
             if (error) {
                 console.error("Error inserting post into database: ", error);
@@ -69,7 +69,7 @@ app.post("/comment", (req, res) => {
     const { id, username, comment } = req.body;
     console.log(id, username, comment);
 
-    conn = connectDB(connection);
+    // conn = connectDB(connection);
 
     // Insert comment into database
     // id = inläggets id
@@ -89,24 +89,24 @@ app.post("/comment", (req, res) => {
         }
     );
 
-    closeDB(conn);
+  //  closeDB(conn);
 });
 
 app.post("/like", (req, res) => {
     const { id, username } = req.body;
 
-    conn = connectDB(connection);
+   // conn = connectDB(connection);
 
     // Insert like into database
     const insertQuery = `INSERT INTO likes (PostID, UserID) SELECT ?, UserID FROM users WHERE Username = ?`;
-    conn.query(insertQuery, [id, username], (error, results, fields) => {
+    conn.query(insertQuery, [username, id], (error, results, fields) => {
         if (error) {
             console.error("Error inserting like into database" + error.stack);
         }
         console.log("Inserted like into database");
     });
 
-    closeDB(conn);
+   // closeDB(conn);
 });
 
 // Flöde sidan
