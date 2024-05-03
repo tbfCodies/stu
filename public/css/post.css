@@ -129,10 +129,10 @@
 
 .interaction-time {
     font-size: 15px;
-    margin-right: 1%;
-    align-items: center;
+    position: absolute;
+    left: 78%; 
+    transform: translateX(-50%);
     color: #666;
-    margin-left: 65%;
 }
 
 /* Beskrivning till inlägg med en bild. */

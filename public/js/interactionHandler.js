@@ -1,8 +1,45 @@
 const likeIcons = document.querySelectorAll(".interaction-like");
+function getCookie(name) {
+    const cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+        const [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName === name) {
+            const username = decodeURIComponent(cookieValue);
+            // Remove the prefix "username" if it exists
+            if (username.startsWith("username")) {
+                return username.substring("username".length);
+                // or
+                // return username.slice("username".length);
+            }
+            return username;
+        }
+    }
+    return null;
+}
+
 likeIcons.forEach((likeIcon) => {
     likeIcon.addEventListener("click", (e) => {
         const id = e.currentTarget.closest(".post").id;
-        like(id);
+        const username = getCookie("username");
+        
+        const pathID = e.currentTarget.closest(".interaction-like").childNodes[1].id;
+        const path = e.currentTarget.closest(".interaction-like").childNodes[1];
+
+        console.log(path)
+
+
+        if (pathID == "liked") {
+            path.style.backgroundImage = "url('/assets/heart-empty.svg')";
+            path.style.backgroundSize = "cover";
+            path.id = "unliked";
+        }
+        if (pathID == "unliked") {
+            path.style.backgroundImage = "url('/assets/heart-filled.svg')";
+            path.style.backgroundSize = "cover";
+            path.id = "liked";
+        }
+
+        like(id,username);
     });
 });
 
@@ -10,8 +47,30 @@ const commentIcons = document.querySelectorAll(".interaction-comment");
 commentIcons.forEach((commentIcon) => {
     commentIcon.addEventListener("click", (e) => {
         const id = e.currentTarget.closest(".post").id;
-        comment(id);
+        const username = getCookie("username");
+
+        comment(id,username);
         loadComments(id);
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const timestamps = document.querySelectorAll("[data-timestamp]");
+
+    timestamps.forEach(timestamp => {
+        const timestampValue = new Date(timestamp.dataset.timestamp);
+        const currentTime = new Date();
+        const timeDifference = currentTime - timestampValue;
+        const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+        
+        if (hoursDifference < 24) {
+            timestamp.textContent = hoursDifference + " hours ago";
+            timestamp.classList.add("hours-ago");
+        } else {
+            const daysDifference = Math.floor(hoursDifference / 24);
+            timestamp.textContent = daysDifference + " days ago";
+            timestamp.classList.add("days-ago");
+        }
     });
 });
 
@@ -22,7 +81,7 @@ const setCookie = (name, value, days) => {
     document.cookie = cookieValue;
 };
 function loadComments(id) {
-    fetch("/temp/data.json")
+    fetch("/fetchComments")
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Failed to load comments data");
@@ -30,40 +89,43 @@ function loadComments(id) {
             return response.json();
         })
         .then((postData) => {
-            const post = postData.post.find(
-                (post) => post.PostID === parseInt(id)
-            );
+            // Popup ID
+            
+            postData.forEach((post, index) => {
+                if (post.PostID == id) {
+                    const popupUserInfo = document.querySelector(".comment-section");
 
-            const popupUserInfo = document.querySelector(".comment-section");
-            post.comments.forEach((comment, index) => {
-                const createComment = document.createElement("div");
-                createComment.classList.add(`comment`);
-                createComment.id = `${index}`;
-                popupUserInfo.appendChild(createComment);
+                    const createComment = document.createElement("div");
+                    createComment.classList.add(`comment`);
+                    createComment.id = `${index}`;
+                    popupUserInfo.appendChild(createComment);
+    
+                    const createCommentUser = document.createElement("p");
+                    createCommentUser.classList.add(`username`);
+                    createComment.appendChild(createCommentUser);
+    
+                    const createCommentText = document.createElement("p");
+                    createCommentText.classList.add(`comment`);
+                    createComment.appendChild(createCommentText);
+    
+                    const createCommentDate = document.createElement("p");
+                    createCommentDate.classList.add(`date`);
+                    createComment.appendChild(createCommentDate);
 
-                const createCommentUser = document.createElement("p");
-                createCommentUser.classList.add(`username`);
-                createComment.appendChild(createCommentUser);
+                    // set
+                    createCommentUser.innerText = post.Username;
+                    createCommentText.innerText = post.Comment;
+                    createCommentDate.innerText = post.CommentedAt;
 
-                const createCommentText = document.createElement("p");
-                createCommentText.classList.add(`comment`);
-                createComment.appendChild(createCommentText);
-
-                const createCommentDate = document.createElement("p");
-                createCommentDate.classList.add(`date`);
-                createComment.appendChild(createCommentDate);
-
-                createCommentUser.innerText = comment.Username;
-                createCommentText.innerText = comment.Comment;
-                createCommentDate.innerText = comment.CommentedAt;
-            });
+                }   
+            })
         })
         .catch((error) => {
             console.error("Error loading comments data:", error);
         });
 }
 
-const comment = (id) => {
+const comment = (id,username) => {
     // popup meny
     const popup = document.querySelector(".popup-menu");
     popup.style.display = "block";
@@ -84,14 +146,12 @@ const comment = (id) => {
     popup.dataset.postId = id;
 
     //setCookie("PostID", id, 1);
-    document.cookie = `PostID=${id}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/; domain=localhost`;
 
     const form = popup.querySelector(".popup-form");
     form.addEventListener("submit", (e) => {
         e.preventDefault(true);
         const comment = form.querySelector("input").value;
         if (comment !== "") {
-            const username = "Alfred"; // FIXME: get username from login
             const postId = popup.dataset.postId; // Retrieve the PostID from the popup
             commentPost(postId, username, comment);
 
@@ -122,8 +182,9 @@ const commentPost = (id, username, comment) => {
         });
 };
 
-const like = (id) => {
-    const username = "Alfred"; // FIXME: get username from login
+const like = (id, username) => {
+    
+
 
     fetch("/like", {
         method: "POST",

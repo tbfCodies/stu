@@ -7,15 +7,14 @@ const connection = mysql.createConnection({
     database: "stu",
 });
 // connect to the MySQL database
-function connectDB(db) {
-    db.connect((error) => {
+function connectDB() {
+    connection.connect((error) => {
         if (error) {
             console.error("Error connecting to MySQL database:", error);
         } else {
             console.log("Connected to MySQL database!");
         }
     });
-    return db;
 }
 
 module.exports = {

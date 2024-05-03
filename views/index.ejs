@@ -31,7 +31,7 @@
         </div>
       </div>
 
-      <% data.post.forEach(post => { %>
+      <% data[0].forEach(post => { %>
       <div class="post" id="<%= post.PostID %>">
         <div class="user-info">
           <img class="profile-picture" src="<%= post.ProfilePicture %>" />
@@ -48,26 +48,52 @@
 
         <div class="post-interactions" id="<%= post.PostID %>">
           <div class="interaction-like">
-            <% if (post.liked == false) { %>
-            <p class="like-icon" id="unliked"></p>
-            <p class="like-count"><%= post.likes_count %> likes</p>
-            <% } else { %>
-            <p class="like-icon" id="liked"></p>
-            <p class="like-count"><%= post.likes_count %> likes</p>
+
+            <% let liked = false; %>
+            <% likesUser.forEach(uLike => { %>
+                <% for (let i = 0; i < likesUser.length; i++) { %>
+                  <% if (likesUser[i].UserID == userData.UserID && likesUser[i].PostID == post.PostID && liked == false) { %>
+                    <p class="like-icon" id="liked"></p>
+                    <% liked = true; %>
+                  <% } %>
+              <% } %>
+            <% }); %>
+
+            <% if(!liked) { %>
+              <p class="like-icon" id="unliked"></p>
             <% } %>
-          </div>
+
+            <% let hasLikes = false; %>
+            <% likeData.forEach(like => { %>
+                <% for (let i = 0; i < likeData.length; i++) { %>
+                  <% if (likeData[i].PostID == post.PostID && likeData[i].count > 0 && hasLikes == false) { %>
+                    <p class="like-count"><%= likeData[i].count %> likes</p>
+                    <% hasLikes = true; %>
+                  <% } %>
+              <% } %>
+            <% }); %>
+
+            <% if (!hasLikes) { %>
+              <p class="like-count">0 likes</p>
+            <% } %>
+            </div>
 
           <div class="interaction-comment">
-            <img
-              class="comment-icon"
-              src="/assets/message-square.svg"
-              alt="message bubble icon"
-            />
-            <p class="comment-count"><%= post.comments.length %> comments</p>
-          </div>
+            <img class="comment-icon" src="/assets/message-square.svg" alt="message bubble icon" />
+            <% let hasComments = false; %>
+            <% commentData.forEach(cmd => { %>
+                <% if (cmd.PostID == post.PostID) { %>
+                    <p class="comment-count"><%= cmd.count %> comments</p>
+                    <% hasComments = true; %>
+                <% } %>
+            <% }); %>
+            <% if (!hasComments) { %>
+                <p class="comment-count">0 comments</p>
+            <% } %>
+        </div>
 
           <div class="interaction-time">
-            <p><%= post.CreatedAt %></p>
+            <p data-timestamp="<%= post.CreatedAt %>"></p>
           </div>
         </div>
 
