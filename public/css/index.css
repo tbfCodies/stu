@@ -222,8 +222,6 @@ li:focus {
   display: none;
 }
 
-/* ... your existing styles ... */
-
 @media (max-width: 768px) {
   .left-menu,
   .openrightmenu {
@@ -233,10 +231,10 @@ li:focus {
   .header {
     height: 8%;
     width: 100%;
-    background-color: #f0f0f0; /* Example light background */
+    background-color: #f0f0f0; 
     display: flex;
-    justify-content: space-between; /* Space between elements */
-    align-items: center; /* Vertical centering */
+    justify-content: space-between;
+    align-items: center; 
     position: fixed;
     top: 0px;
     padding: 4px;
@@ -270,6 +268,7 @@ li:focus {
     box-sizing: border-box;
     padding: 5px;
     margin-top: 16%;
+    margin-bottom: 10vh;
   }
 
   .filter {
@@ -281,20 +280,20 @@ li:focus {
     justify-content: space-between;
   }
 
-  /* Beskrivning till inlägg med en bild. */
+
   .post-description {
     width: 100%;
     margin-top: 6px;
     background-color: transparent;
     border-radius: 8px;
     border: none;
-    overflow: hidden; /* Ensure text overflow is hidden */
+    overflow: hidden; 
   }
 
   .post-description p {
     padding: 8px;
     font-size: 16px;
-    margin: 0; /* Reset margin to prevent unexpected spacing */
+    margin: 0; 
   }
 
   .bottom-menu {
@@ -303,11 +302,10 @@ li:focus {
     position: fixed;
     bottom: 0px;
     padding: 3px;
-    background-color: #f0f0f0; /* Example light background */
+    background-color: #f0f0f0; 
     box-shadow: 0px 2px 0px #ada5a5, 0px -2px 0px #888;
   }
 
-  /* Bottom Menu Fixes */
   .bottom-menu ul {
     display: flex;
     justify-content: space-around;
@@ -321,7 +319,7 @@ li:focus {
   }
 
   .bottom-menu img {
-    height: 30px; /* Adjust size of icons as needed */
+    height: 30px; 
   }
 
   .popup-menu {
@@ -333,7 +331,7 @@ li:focus {
   .left-section,
   .right-section {
     width: 100%; 
-    float: none; /* Stack sections vertically on mobile */
+    float: none; 
   }
 
   .left-section h1 {
@@ -354,5 +352,7 @@ li:focus {
     max-height: 600px;
     overflow-y: auto;
   }
+
+
 
 }
