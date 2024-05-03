@@ -9,7 +9,7 @@
   </head>
   <body>
     <!--Ladda in nav-menyn-->
-    <%- include('reuse/huvudmeny') %>
+    <%- include('reuse/huvudmeny') %> <%- include('reuse/header') %>
 
     <!--Container för att skapa och posta ett inlägg-->
     <div class="skapainlagg-container">
@@ -31,7 +31,12 @@
           <div class="skapa-inlagg-grupp">
             <!--Ladda upp en fil = bild-->
             <label for="bild">Ladda upp bild:</label>
-            <input type="file" id="bild" name="bild" accept="image/*"/><br /><br />
+            <input
+              type="file"
+              id="bild"
+              name="bild"
+              accept="image/*"
+            /><br /><br />
             <div id="bild-forhandsvisning"></div>
           </div>
 
@@ -51,8 +56,13 @@
           </div>
 
           <div class="skapa-inlagg-grupp">
-            <label for ="dela-foretag">Dela för företag:</label>
-            <input type="checkbox" id="dela-foretag" name="dela-foretag" value="dela-foretag">
+            <label for="dela-foretag">Dela för företag:</label>
+            <input
+              type="checkbox"
+              id="dela-foretag"
+              name="dela-foretag"
+              value="dela-foretag"
+            />
           </div>
 
           <!--Knapp för att posta-->
@@ -62,6 +72,7 @@
         </form>
       </div>
     </div>
+    <%- include('reuse/bottenmeny') %>
     <script src="js/skapainlagg.js"></script>
   </body>
 </html>

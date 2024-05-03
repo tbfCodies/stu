@@ -1,98 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-        <link rel="stylesheet" href="css/index.css" />
-        <link rel="stylesheet" href="css/post.css" />
-    </head>
-    <body>
-        <!--Laddar in nav-menyn-->
-        <%- include('reuse/huvudmeny') %>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/post.css" />
+  </head>
+  <body>
+    <!--Laddar in nav-menyn-->
+    <%- include('reuse/huvudmeny') %> <%- include('reuse/header') %>
 
-        <div class="main-content">
-            <div class="filter">
-                <button class="campusBTN" onclick="">CAMPUS</button>
-                <button class="vannerBTN" onclick="">VÄNNER</button>
-            </div>
+    <div class="main-content">
+      <div class="filter">
+        <button class="campusBTN" onclick="">CAMPUS</button>
+        <button class="vannerBTN" onclick="">VÄNNER</button>
+      </div>
 
-            <div class="popup-menu">
-                <button class="close-popup">X</button>
-                <div class="left-section">
-                    <h1>Comment</h1>
-                    <form class="popup-form" action="POST">
-                        <input type="text" placeholder="Enter your comment" />
-                        <button type="submit">Post</button>
-                    </form>
-                </div>
-                <div class="right-section">
-                    <div class="comment-section">
-    
-                    </div>
-                </div>
-            </div>
+      <div class="popup-menu">
+        <button class="close-popup">X</button>
+        <div class="left-section">
+          <h1>Comment</h1>
+          <form class="popup-form" action="POST">
+            <input type="text" placeholder="Enter your comment" />
+            <button type="submit">Post</button>
+          </form>
+        </div>
+        <div class="right-section">
+          <div class="comment-section"></div>
+        </div>
+      </div>
 
-            <% data.post.forEach(post => { %>
-            <div class="post" id="<%= post.PostID %>">
-                <div class="user-info">
-                    <img
-                        class="profile-picture"
-                        src="<%= post.ProfilePicture %>"
-                    />
-                    <h3 class="username"><%= post.Username %></h3>
-                </div>
-
-                <div class="post-content">
-                    <% if (post.Image) { %>
-                    <img
-                        class="post-image"
-                        src="<%= post.Image %>"
-                        alt="Post Image"
-                    />
-                    <% } %>
-
-                    <p><%= post.Info %></p>
-                </div>
-
-                <div class="post-interactions" id="<%= post.PostID %>">
-                    <div class="interaction-like">
-                        <% if (post.liked == false) { %>
-                        <p class="like-icon" id="unliked" /></p>
-                        <p class="like-count"><%= post.likes_count %> likes</p>
-                        <% } else { %>
-                        <p class="like-icon" id="liked" /></p>
-                        <p class="like-count"><%= post.likes_count %> likes</p>
-                        <% } %>
-                    </div>
-
-                    <div class="interaction-comment">
-                        <img
-                            class="comment-icon"
-                            src="/assets/message-square.svg"
-                            alt="message bubble icon"
-                        />
-                        <p class="comment-count"><%= post.comments.length %> comments</p>
-                    </div>
-
-                    <div class="interaction-time">
-                        <p><%= post.CreatedAt %></p>
-                    </div>
-                </div>
-
-                <% if (post.Image) { %>
-                  <div class="post-description">
-                      <p><%= post.Info %></p>
-                  </div>
-                <% } %>
-            </div>
-            <% }); %>
+      <% data.post.forEach(post => { %>
+      <div class="post" id="<%= post.PostID %>">
+        <div class="user-info">
+          <img class="profile-picture" src="<%= post.ProfilePicture %>" />
+          <h3 class="username"><%= post.Username %></h3>
         </div>
 
-        <!--Laddar in sidomenyn till höger med vänförslag-->
-        <%- include('reuse/forslagsmeny') %>
+        <div class="post-content">
+          <% if (post.Image) { %>
+          <img class="post-image" src="<%= post.Image %>" alt="Post Image" />
+          <% } %> <% if (!post.Image) { %>
+          <p><%= post.Info %></p>
+          <% } %>
+        </div>
 
-        <script src="js/script.js"></script>
-        <script src="js/interactionHandler.js" type="module"></script>
-    </body>
+        <div class="post-interactions" id="<%= post.PostID %>">
+          <div class="interaction-like">
+            <% if (post.liked == false) { %>
+            <p class="like-icon" id="unliked"></p>
+            <p class="like-count"><%= post.likes_count %> likes</p>
+            <% } else { %>
+            <p class="like-icon" id="liked"></p>
+            <p class="like-count"><%= post.likes_count %> likes</p>
+            <% } %>
+          </div>
+
+          <div class="interaction-comment">
+            <img
+              class="comment-icon"
+              src="/assets/message-square.svg"
+              alt="message bubble icon"
+            />
+            <p class="comment-count"><%= post.comments.length %> comments</p>
+          </div>
+
+          <div class="interaction-time">
+            <p><%= post.CreatedAt %></p>
+          </div>
+        </div>
+
+        <% if (post.Image) { %>
+        <div class="post-description">
+          <p><%= post.Info %></p>
+        </div>
+        <% } %>
+      </div>
+      <% }); %>
+    </div>
+
+    <%- include('reuse/bottenmeny') %>
+
+    <!--Laddar in sidomenyn till höger med vänförslag-->
+    <%- include('reuse/forslagsmeny') %>
+
+    <script src="js/script.js"></script>
+    <script src="js/interactionHandler.js" type="module"></script>
+  </body>
 </html>
