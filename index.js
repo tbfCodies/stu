@@ -7,8 +7,8 @@ const postData = require("./public/temp/data.json");
 const app = express();
 
 // Avkommentera om du vill använda databasen
-//const { connection, connectDB, closeDB } = require("./database");
-//conn = connectDB(connection); // Connect to the database
+const { connection, connectDB, closeDB } = require("./database");
+conn = connectDB(connection); // Connect to the database
 app.use(
     session({
         secret: "stu",
@@ -44,7 +44,7 @@ app.post("/posta-inlagg", upload.single("bild"), (req, res) => {
 
     const query = `INSERT INTO posts (UserID, Image, Info, Choice) VALUES (?,?,?,?)`;
 
-    connection.query(
+    conn.query(
         query,
         [userID, file.path, text, val, delaForetag],
         (error, results) => {
