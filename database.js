@@ -17,16 +17,10 @@ function connectDB(db) {
     });
     return db;
 }
-// close the MySQL connection
-function closeDB(db) {
-    db.end();
-    return db;
-}
 
 module.exports = {
     connection,
     connectDB,
-    closeDB,
 };
 
-// const { connection, connectDB, closeDB } = require("./database");
+// const { connection, connectDB } = require("./database");
