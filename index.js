@@ -7,8 +7,8 @@ const postData = require("./public/temp/data.json");
 const app = express();
 
 // Avkommentera om du vill använda databasen
-const { connection, connectDB, closeDB } = require("./database");
-conn = connectDB(connection); // Connect to the database
+//const { connection, connectDB, closeDB } = require("./database");
+//conn = connectDB(connection); // Connect to the database
 app.use(
     session({
         secret: "stu",
