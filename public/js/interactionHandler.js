@@ -1,8 +1,8 @@
 const likeIcons = document.querySelectorAll(".interaction-like");
 function getCookie(name) {
-    const cookies = document.cookie.split('; ');
+    const cookies = document.cookie.split("; ");
     for (let cookie of cookies) {
-        const [cookieName, cookieValue] = cookie.split('=');
+        const [cookieName, cookieValue] = cookie.split("=");
         if (cookieName === name) {
             const username = decodeURIComponent(cookieValue);
             // Remove the prefix "username" if it exists
@@ -21,12 +21,12 @@ likeIcons.forEach((likeIcon) => {
     likeIcon.addEventListener("click", (e) => {
         const id = e.currentTarget.closest(".post").id;
         const username = getCookie("username");
-        
-        const pathID = e.currentTarget.closest(".interaction-like").childNodes[1].id;
+
+        const pathID =
+            e.currentTarget.closest(".interaction-like").childNodes[1].id;
         const path = e.currentTarget.closest(".interaction-like").childNodes[1];
 
-        console.log(path)
-
+        console.log(path);
 
         if (pathID == "liked") {
             path.style.backgroundImage = "url('/assets/heart-empty.svg')";
@@ -39,7 +39,8 @@ likeIcons.forEach((likeIcon) => {
             path.id = "liked";
         }
 
-        like(id,username);
+        window.location.href = `/feed`;
+        like(id, username);
     });
 });
 
@@ -49,20 +50,19 @@ commentIcons.forEach((commentIcon) => {
         const id = e.currentTarget.closest(".post").id;
         const username = getCookie("username");
 
-        comment(id,username);
+        comment(id, username);
         loadComments(id);
     });
 });
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const timestamps = document.querySelectorAll("[data-timestamp]");
-
-    timestamps.forEach(timestamp => {
+    timestamps.forEach((timestamp) => {
         const timestampValue = new Date(timestamp.dataset.timestamp);
         const currentTime = new Date();
         const timeDifference = currentTime - timestampValue;
         const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
-        
+
         if (hoursDifference < 24) {
             timestamp.textContent = hoursDifference + " hours ago";
             timestamp.classList.add("hours-ago");
@@ -80,6 +80,31 @@ const setCookie = (name, value, days) => {
     const cookieValue = `${name}=${value}; expires=${expirationDate.toUTCString()}; path=/`;
     document.cookie = cookieValue;
 };
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInMs = now - date;
+
+    let timeReturn;
+    const minutes = Math.floor(diffInMs / (1000 * 60));
+    if (minutes > 60) {
+        const hours = Math.floor(minutes / 60);
+
+        if (hours > 24) {
+            const days = Math.floor(hours / 24);
+            timeReturn = `${days} days ago`;
+            return timeReturn;
+        }
+
+        timeReturn = `${hours} hours ago`;
+        return timeReturn;
+    }
+
+    timeReturn = `${minutes} minutes ago`;
+    return timeReturn;
+}
+
 function loadComments(id) {
     fetch("/fetchComments")
         .then((response) => {
@@ -90,24 +115,27 @@ function loadComments(id) {
         })
         .then((postData) => {
             // Popup ID
-            
+
             postData.forEach((post, index) => {
                 if (post.PostID == id) {
-                    const popupUserInfo = document.querySelector(".comment-section");
+                    const popupDate = formatDate(post.CommentedAt);
+
+                    const popupUserInfo =
+                        document.querySelector(".comment-section");
 
                     const createComment = document.createElement("div");
                     createComment.classList.add(`comment`);
                     createComment.id = `${index}`;
                     popupUserInfo.appendChild(createComment);
-    
+
                     const createCommentUser = document.createElement("p");
                     createCommentUser.classList.add(`username`);
                     createComment.appendChild(createCommentUser);
-    
+
                     const createCommentText = document.createElement("p");
                     createCommentText.classList.add(`comment`);
                     createComment.appendChild(createCommentText);
-    
+
                     const createCommentDate = document.createElement("p");
                     createCommentDate.classList.add(`date`);
                     createComment.appendChild(createCommentDate);
@@ -115,17 +143,16 @@ function loadComments(id) {
                     // set
                     createCommentUser.innerText = post.Username;
                     createCommentText.innerText = post.Comment;
-                    createCommentDate.innerText = post.CommentedAt;
-
-                }   
-            })
+                    createCommentDate.innerText = popupDate;
+                }
+            });
         })
         .catch((error) => {
             console.error("Error loading comments data:", error);
         });
 }
 
-const comment = (id,username) => {
+const comment = (id, username) => {
     // popup meny
     const popup = document.querySelector(".popup-menu");
     popup.style.display = "block";
@@ -159,6 +186,8 @@ const comment = (id,username) => {
             form.querySelector("input").value = "";
             popup.style.display = "none";
             document.body.style.overflow = "auto";
+
+            window.location.href = `/feed`;
         }
     });
 };
@@ -183,9 +212,6 @@ const commentPost = (id, username, comment) => {
 };
 
 const like = (id, username) => {
-    
-
-
     fetch("/like", {
         method: "POST",
         headers: {

@@ -1,8 +1,8 @@
 const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const fileForge = require('express-fileforge');
-const path = require('path');
+const fileForge = require("express-fileforge");
+const path = require("path");
 const fs = require("fs");
 
 // const postData = require("./public/temp/data.json");
@@ -22,7 +22,7 @@ app.use(
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const routes = require("./routes");
@@ -31,13 +31,25 @@ app.use("/", routes);
 /*
 app.post("/posta-inlagg", async function (req, res) {
     try {
-        const { text, val, "dela-foretag": delaForetag } = req.body;
 
+        // Saknar bilden, måste lägga till den från filen som du klickar submit på (så text, val, bild?) a
+        const { text, val} = req.body;
+        
+        // Här hämtar du användarens ID från login sidan
+        const userInfo = require("./public/temp/user.json");
+        let userR; // Detta är användaren (Du kan kalla den som userR.UserID eller userR.Username osv. Referera till /temp/user.json för att se vad som finns där.) (Denna uppdateras vid login.)
+        userInfo.forEach((user) => {
+            userR = user;
+        });
+        
+        //  Aldrig använt detta förut, men det finns en som heter express-fileupload som kan nog vara lättare. 
+        //  Dock har du skrivit att den ska spara filen på /uploads/ och sedan specificerat att den ska heta uploadedFile.jpg? Oklart.
         let uploadedFile = await fileForge.saveFile(req, path.join(__dirname, 'uploads'), 'uploadedFile.jpg');
 
-        const postinlaggQuery = `INSERT INTO posts (UserID, Image, Info, Choice) VALUES ((SELECT UserID FROM users WHERE Username =?),?,?,?)`;
+        const postinlaggQuery = `INSERT INTO posts (UserID, Image, Info, Choice) VALUES ((SELECT UserID FROM users WHERE Username =?),?,?,?)`; // Väljer UserID baserat på Username= odefinierad variabel userID.
 
-        connection.query(postinlaggQuery, [userID, uploadedFile, text, val, delaForetag], (error, results) => {
+        // Variablerna inom [] är placeholders för värderna som du skickar med i querien. (Dessa är specifierat med frågetecken och måste vara i den ordningen som i queryn.)
+        connection.query(postinlaggQuery, [userID, uploadedFile, text, val], (error, results) => { // userID är ej definierad, använd userR.UserID och skippa SELECT baserat på Username.
             if (error) {
                 console.error("Error inserting post into database: ", error);
                 res.status(500).send("Error inserting post.");
@@ -46,7 +58,7 @@ app.post("/posta-inlagg", async function (req, res) {
             }
         });
 
-        // Tbx till startsidan??
+        // Tbx till startsidan?? (Yes! Helt korrekt - om detta inte fungerar kan du göra att HTML skickar dig till /feed istället genom href.)
         res.redirect('/feed');
     } catch (error) {
         console.error(error);
@@ -83,7 +95,6 @@ app.post("/comment", (req, res) => {
             console.log("Inserted comment into database");
         }
     );
-
 });
 
 app.get("/fetchComments", (req, res) => {
@@ -116,15 +127,19 @@ const removeLike = async (id, username) => {
 const checkIfLiked = async (id, username) => {
     const checkQuery = `SELECT * FROM likes WHERE PostID = ? AND UserID = (SELECT UserID FROM users WHERE Username = ?)`;
     return new Promise((resolve, reject) => {
-        connection.query(checkQuery, [id, username], (error, results, fields) => {
-            if (error) {
-                console.error("Error checking if liked" + error.stack);
-                reject(error);
+        connection.query(
+            checkQuery,
+            [id, username],
+            (error, results, fields) => {
+                if (error) {
+                    console.error("Error checking if liked" + error.stack);
+                    reject(error);
+                }
+                resolve(results.length > 0);
             }
-            resolve(results.length > 0);
-        });
+        );
     });
-}
+};
 
 app.post("/like", async (req, res) => {
     const { id, username } = req.body;
@@ -141,16 +156,16 @@ app.post("/like", async (req, res) => {
 });
 
 const countComments = async (posts) => {
-    const { fetchComments } = require("./public/js/feedHandler")
+    const { fetchComments } = require("./public/js/feedHandler");
     const length = await fetchComments();
 
-    let arr = [] // return arr
+    let arr = []; // return arr
 
-    posts[0].forEach(post => {
-        const postID = post.PostID
+    posts[0].forEach((post) => {
+        const postID = post.PostID;
         let commentNr = 0;
 
-        length[0].forEach(comment => {
+        length[0].forEach((comment) => {
             if (comment.PostID == postID) {
                 commentNr++;
             }
@@ -158,24 +173,24 @@ const countComments = async (posts) => {
 
         arr.push({
             PostID: postID,
-            count: commentNr
-        })
-    })
+            count: commentNr,
+        });
+    });
 
     return arr;
-}
+};
 
 const countLikes = async (posts) => {
-    const { fetchLikes } = require("./public/js/feedHandler")
+    const { fetchLikes } = require("./public/js/feedHandler");
     const length = await fetchLikes();
 
-    let arr = [] // return arr
+    let arr = []; // return arr
 
-    posts[0].forEach(post => {
-        const postID = post.PostID
+    posts[0].forEach((post) => {
+        const postID = post.PostID;
         let likeNr = 0;
 
-        length[0].forEach(like => {
+        length[0].forEach((like) => {
             if (like.PostID == postID) {
                 likeNr++;
             }
@@ -183,30 +198,30 @@ const countLikes = async (posts) => {
 
         arr.push({
             PostID: postID, // 0
-            count: likeNr // 1
-        })
-    })
+            count: likeNr, // 1
+        });
+    });
 
     return arr;
-}
+};
 
 const checkLiked = async (userID) => {
-    const { fetchLikes } = require("./public/js/feedHandler")
+    const { fetchLikes } = require("./public/js/feedHandler");
     const length = await fetchLikes();
 
     let userLike = [];
 
-    length[0].forEach(like => {
-        if(like.UserID == userID){
+    length[0].forEach((like) => {
+        if (like.UserID == userID) {
             userLike.push({
                 PostID: like.PostID,
-                UserID: like.UserID
-            })
-        }  
+                UserID: like.UserID,
+            });
+        }
     });
 
     return userLike;
-}
+};
 
 const tempLoad = async (username) => {
     const { fetchUserInfo } = require("./public/js/feedHandler");
@@ -214,25 +229,73 @@ const tempLoad = async (username) => {
 
     const jsonData = JSON.stringify(userData[0]);
     try {
-        await fs.writeFileSync("./public/temp/user.json", jsonData);   
+        await fs.writeFileSync("./public/temp/user.json", jsonData);
     } catch (err) {
         console.error(err);
     }
-}
+};
 
+const popupData = async () => {
+    const { fetchPostLikes } = require("./public/js/feedHandler");
+    const postsFetch = await fetchPostLikes();
+
+    // Create an object to store PostID arrays
+    let postIDMap = {};
+
+    // Iterate over each post and populate the postIDMap
+    postsFetch[0].forEach((post) => {
+        // If PostID doesn't exist in postIDMap, initialize it as an empty array
+        if (!postIDMap[post.PostID]) {
+            postIDMap[post.PostID] = [];
+        }
+        // Push the username into the array associated with the PostID
+        postIDMap[post.PostID].push(post.Username);
+    });
+
+    // Convert postIDMap into an array of objects
+    let result = Object.entries(postIDMap).map(([PostID, usernames]) => ({
+        PostID: parseInt(PostID), // Convert PostID from string to integer
+        Usernames: usernames,
+    }));
+
+    return result;
+};
+
+app.get("/feed/:id", async (req, res) => {
+    const { id } = req.params;
+
+    let val;
+    if (id == null) {
+        val = "campus";
+    } else {
+        val = id;
+    }
+
+    res.redirect(`/feed?val=${val}`);
+});
 
 // Flöde sidan
 app.get("/feed", async (req, res) => {
-    const { fetchPosts } = require("./public/js/feedHandler")
+    let choice;
+    const val = req.query.val;
+    if (val == null) {
+        choice = "campus";
+    } else {
+        choice = val.toLowerCase();
+    }
+
+    const { fetchPosts } = require("./public/js/feedHandler");
     const userInfo = require("./public/temp/user.json");
-    const postData = await fetchPosts("campus");
+    const postData = await fetchPosts(choice); // campus, vanner, kontakt
     const arr = await countComments(postData);
     const likes = await countLikes(postData);
 
+    const dataPopup = await popupData();
+
     let userR;
-    userInfo.forEach(user => {
-        userR = user
-    })
+    userInfo.forEach((user) => {
+        userR = user;
+    });
 
     const userLikes = await checkLiked(userR.UserID);
     res.render("index", {
@@ -240,38 +303,40 @@ app.get("/feed", async (req, res) => {
         commentData: arr,
         likeData: likes,
         likesUser: userLikes,
-        userData: userR
+        userData: userR,
+        popupLikes: dataPopup,
     });
 });
 
-
-
 // Vart användaren kommer efter att ha loggat in, vilket är flödesidan såklart!
 app.post("/feed", async (req, res) => {
-    const { username } = req.body
+    const { username } = req.body;
     tempLoad(username);
 
     const { fetchPosts } = require("./public/js/feedHandler");
     const userInfo = require("./public/temp/user.json");
-    
+
     const postData = await fetchPosts("campus");
     const arr = await countComments(postData);
     const likes = await countLikes(postData);
 
+    const dataPopup = await popupData();
+
     let userR;
-    userInfo.forEach(user => {
-        userR = user
-    })
-    
+    userInfo.forEach((user) => {
+        userR = user;
+    });
+
     const userLikes = await checkLiked(userR.UserID);
-   
+
     res.render("index", {
         username,
         data: postData,
         commentData: arr,
         likeData: likes,
         likesUser: userLikes,
-        userData: userR
+        userData: userR,
+        popupLikes: dataPopup,
     });
 });
 
