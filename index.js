@@ -1,7 +1,8 @@
 const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const multer = require("multer");
+const fileForge = require('express-fileforge');
+const path = require('path');
 const fs = require("fs");
 
 // const postData = require("./public/temp/data.json");
@@ -27,39 +28,31 @@ app.use(bodyParser.json());
 const routes = require("./routes");
 app.use("/", routes);
 
-//Posta det skapade inlägget till databasen
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "./uploads/");
-    },
-    filename: function (req, file, cb) {
-        cb(null, new Date().toISOString() + file.originalname);
-    },
-});
-const upload = multer({ storage: storage });
+/*
+app.post("/posta-inlagg", async function (req, res) {
+    try {
+        const { text, val, "dela-foretag": delaForetag } = req.body;
 
-//Queryn kanske behöver ändras
+        let uploadedFile = await fileForge.saveFile(req, path.join(__dirname, 'uploads'), 'uploadedFile.jpg');
 
-app.post("/posta-inlagg", upload.single("bild"), (req, res) => {
-    const { text, val, "dela-foretag": delaForetag } = req.body;
+        const postinlaggQuery = `INSERT INTO posts (UserID, Image, Info, Choice) VALUES ((SELECT UserID FROM users WHERE Username =?),?,?,?)`;
 
-    const file = req.file ? req.file : null;
-
-    const query = `INSERT INTO posts (UserID, Image, Info, Choice) VALUES (?,?,?,?)`;
-
-    connection.query(
-        query,
-        [userID, file.path, text, val, delaForetag],
-        (error, results) => {
+        connection.query(postinlaggQuery, [userID, uploadedFile, text, val, delaForetag], (error, results) => {
             if (error) {
                 console.error("Error inserting post into database: ", error);
                 res.status(500).send("Error inserting post.");
             } else {
                 res.send("Post added successfully!");
             }
-        }
-    );
-});
+        });
+
+        // Tbx till startsidan??
+        res.redirect('/feed');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+}); */
 
 const PORT = process.env.PORT || 5000;
 
