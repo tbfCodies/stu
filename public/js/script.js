@@ -31,9 +31,9 @@ const fetchFeed = (BTN) => {
 
 //Funktion för att öppna menyn till höger
 function openSuggestionsMeny() {
-    document.getElementById("suggestions").style.width = "12%";
+    document.getElementById("suggestions").classList.add("open")
 }
 //Funktion för att stänga menyn till höger
 function closeSuggestionsMeny() {
-    document.getElementById("suggestions").style.width = "0";
+    document.getElementById("suggestions").classList.remove("open")
 }
