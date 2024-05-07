@@ -3,6 +3,7 @@
   padding: 0;
 }
 
+/* Popup meny för kommentarer*/
 .popup-menu {
   position: fixed;
   display: none;
@@ -15,6 +16,8 @@
   width: 1000px;
   max-width: 90%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 5vh;
+  z-index: 80;
 }
 
 .close-popup {
@@ -27,11 +30,13 @@
   cursor: pointer;
 }
 
+/* Lägg till ny kommentar sektion*/
 .left-section {
   width: 50%;
   float: left;
 }
 
+/* Visa upp existerande kommentarer sektion*/
 .right-section {
   width: 50%;
   float: right;
@@ -217,27 +222,36 @@ li:focus {
   font-size: 36px;
 }
 
+/* Gömmer header och bottom-menu, vilket är menyerna för mobil designen*/
 .header,
 .bottom-menu {
   display: none;
 }
 
+
+/* Har fokuserat på 360x800,    */
+
 @media (max-width: 768px) {
+
+  /* Gömmer vänster menyn och förslagsmenyn till höger. */
   .left-menu,
   .openrightmenu {
     display: none;
   }
 
+  /* Lägger till headern till mobil designen */
   .header {
-    height: 8%;
+    height: auto;
     width: 100%;
-    background-color: #f0f0f0; 
+    background-color: #e0e0e0; 
+    box-shadow: 0px 1px 0px #ada5a5, 0px -1px 0px #888;
     display: flex;
     justify-content: space-between;
     align-items: center; 
     position: fixed;
     top: 0px;
     padding: 4px;
+    z-index: 100;
   }
 
   .header-left {
@@ -252,34 +266,35 @@ li:focus {
 
   .header-right img {
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 1em;
   }
 
   .header img {
-    height: 60px;
+    height: 3.3em;
     width: auto;
     box-sizing: border-box;
     padding: 5px;
   }
 
+  /* Justerar styling på mitten kolumnen, som är container till alla inlägg*/
   .main-content {
     width: 100%;
     margin-left: 0px;
     box-sizing: border-box;
     padding: 5px;
-    margin-top: 16%;
+    margin-top: 22%;
     margin-bottom: 10vh;
   }
 
+  /* Filter knapparna */
   .filter {
-    width: 60%;
+    width: 90%;
     align-self: center;
     height: 20%;
     display: flex;
     margin: auto;
     justify-content: space-between;
   }
-
 
   .post-description {
     width: 100%;
@@ -296,6 +311,7 @@ li:focus {
     margin: 0; 
   }
 
+  /* Visar upp botten menyn / navigeringen för mobil designen.*/
   .bottom-menu {
     width: 100%;
     display: block;
@@ -304,27 +320,39 @@ li:focus {
     padding: 3px;
     background-color: #f0f0f0; 
     box-shadow: 0px 2px 0px #ada5a5, 0px -2px 0px #888;
+    z-index: 90;
   }
 
   .bottom-menu ul {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     list-style-type: none;
-    margin: 0;
+    margin: 0 2%;
     padding: 0;
+    height: 2.3em;
   }
-
+  
   .bottom-menu li {
-    height: 30px;
+    flex: 0 0 auto;
+    text-align: center;
+    width: 20%;
   }
-
+  
+  /* Sätter storleken på ikonerna*/
   .bottom-menu img {
-    height: 30px; 
+    height: 1.8em;
   }
-
+  
+  /* Gör mitten ikonen lite större, så den sticker ut lite*/
+  .bottom-menu .add-post-icon {
+    height: 2.2em;
+    width: auto;
+  }
+  
+  /* Ändrar styling på popup menyn för kommentarerna*/
   .popup-menu {
-    width: 95%; 
     height: 80vh;
+    margin-top: 10vh;
     background-color: #ccc;
   }
 
@@ -348,8 +376,10 @@ li:focus {
     margin-right: 10px; 
   }
 
+  /* Försöker att justera storleken på kommentarerna, 
+  för att det ska se likadant ut oavsett hur många kommentarer det är*/
   .comment-section {
-    max-height: 600px;
+    max-height: calc(90vh - 200px);
     overflow-y: auto;
   }
 

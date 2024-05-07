@@ -7,7 +7,8 @@
   width: 60%;
   padding: 20px;
   overflow-y: auto;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 /*style för boxen*/
 .skapainlagg-box {
@@ -82,21 +83,22 @@ select {
   display: block;
 }
 
+/* Har fokuserat på 360x800,    */
 @media (max-width: 768px) {
+
+  /* Ändrar styling på containern till att skapa nya inlägg*/
   .skapainlagg-container {
-    width: 90%;
-    margin-left: 0px;
-    padding: 0px;
-    margin: auto;
-    display: flex;
-    justify-content: center;
-    max-height: 700px;
-    overflow-y: scroll;
-    z-index: 10;
-  }
-  .skapainlagg-box {
     width: 80%;
-    margin-top: 20%;
+    margin-top: 26%;
+    margin-left: 10%;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .skapainlagg-box {
+    width: 100%;
+    flex: 1; 
+    box-sizing: border-box;
   }
 
   .skapainlagg-box h2 {
@@ -145,10 +147,4 @@ select {
     background-color: #f57c00;
   }
 
-  .header {
-    position: fixed;
-    top: 0px;
-    width: 100%;
-    z-index: 100;
-  }
 }
