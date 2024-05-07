@@ -294,6 +294,21 @@ app.get("/feed/:id", async (req, res) => {
     res.redirect(`/feed?val=${val}`);
 });
 
+// Skapa nytt inlägg sida
+app.get("/createpost", async (req, res) => {
+
+    const userInfo = require("./public/temp/user.json");
+
+    let userR;
+    userInfo.forEach((user) => {
+        userR = user;
+    });
+
+    res.render("skapainlagg", {
+        userData: userR,
+    });
+});
+
 // Flöde sidan
 app.get("/feed", async (req, res) => {
     let choice;
