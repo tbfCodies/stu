@@ -28,51 +28,63 @@ app.use(bodyParser.json());
 const routes = require("./routes");
 app.use("/", routes);
 
-
 app.use(fileUpload());
 app.post("/posta-inlagg", async function (req, res) {
     try {
-
         // Saknar bilden, måste lägga till den från filen som du klickar submit på (så text, val, bild?) a
-        const { text, val, bild} = req.body;
-        
+        const { text, val, bild } = req.body;
+
         // Här hämtar du användarens ID från login sidan
         const userInfo = require("./public/temp/user.json");
         let userR; // Detta är användaren (Du kan kalla den som userR.UserID eller userR.Username osv. Referera till /temp/user.json för att se vad som finns där.) (Denna uppdateras vid login.)
         userInfo.forEach((user) => {
             userR = user;
         });
-        
+
         //Spara bilden i uploads?
         const uploadedFile = req.files.bild;
-        const targetPath = path.join(__dirname, "public", "uploads", uploadedFile.name);
+        const targetPath = path.join(
+            __dirname,
+            "public",
+            "uploads",
+            uploadedFile.name
+        );
+
+        let builderPath = `../uploads/${uploadedFile.name}`;
 
         uploadedFile.mv(targetPath, (err) => {
             if (err) {
                 console.error("Fel vid uppladdning av filen: ", err);
-               // res.status(500).send("Error inserting post.");
+                // res.status(500).send("Error inserting post.");
             } else {
                 //Insert till databas?
                 const postinlaggQuery = `INSERT INTO posts (UserID, Image, Info, Choice) VALUES (?,?,?,?)`;
                 // Väljer UserID baserat på Username= odefinierad variabel userID.
-                connection.query(postinlaggQuery, [userR.UserID, uploadedFile.name, text, val], (error, results) => {
-                    if (error) {
-                        console.error("Error inserting post into database: ", error);
-                        res.status(500).send("Error inserting post.");
-                    } else {
-                        //res.send("Post added successfully!");
+                connection.query(
+                    postinlaggQuery,
+                    [userR.UserID, builderPath, text, val],
+                    (error, results) => {
+                        if (error) {
+                            console.error(
+                                "Error inserting post into database: ",
+                                error
+                            );
+                            res.status(500).send("Error inserting post.");
+                        } else {
+                            //res.send("Post added successfully!");
+                        }
                     }
-                });
+                );
             }
         });
 
         // Tbx till startsidan?? (Yes! Helt korrekt - om detta inte fungerar kan du göra att HTML skickar dig till /feed istället genom href.)
-        res.redirect('/feed');
+        res.redirect("/feed");
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
-}); 
+});
 
 const PORT = process.env.PORT || 5000;
 
