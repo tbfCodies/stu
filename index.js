@@ -1,7 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const fileForge = require("express-fileforge");
+const fileUpload = require("express-fileupload");
 const path = require("path");
 const fs = require("fs");
 
@@ -28,12 +28,13 @@ app.use(bodyParser.json());
 const routes = require("./routes");
 app.use("/", routes);
 
-/*
+
+app.use(fileUpload());
 app.post("/posta-inlagg", async function (req, res) {
     try {
 
         // Saknar bilden, måste lägga till den från filen som du klickar submit på (så text, val, bild?) a
-        const { text, val} = req.body;
+        const { text, val, bild} = req.body;
         
         // Här hämtar du användarens ID från login sidan
         const userInfo = require("./public/temp/user.json");
@@ -42,19 +43,26 @@ app.post("/posta-inlagg", async function (req, res) {
             userR = user;
         });
         
-        //  Aldrig använt detta förut, men det finns en som heter express-fileupload som kan nog vara lättare. 
-        //  Dock har du skrivit att den ska spara filen på /uploads/ och sedan specificerat att den ska heta uploadedFile.jpg? Oklart.
-        let uploadedFile = await fileForge.saveFile(req, path.join(__dirname, 'uploads'), 'uploadedFile.jpg');
+        //Spara bilden i uploads?
+        const uploadedFile = req.files.bild;
+        const targetPath = path.join(__dirname, "public", "uploads", uploadedFile.name);
 
-        const postinlaggQuery = `INSERT INTO posts (UserID, Image, Info, Choice) VALUES ((SELECT UserID FROM users WHERE Username =?),?,?,?)`; // Väljer UserID baserat på Username= odefinierad variabel userID.
-
-        // Variablerna inom [] är placeholders för värderna som du skickar med i querien. (Dessa är specifierat med frågetecken och måste vara i den ordningen som i queryn.)
-        connection.query(postinlaggQuery, [userID, uploadedFile, text, val], (error, results) => { // userID är ej definierad, använd userR.UserID och skippa SELECT baserat på Username.
-            if (error) {
-                console.error("Error inserting post into database: ", error);
-                res.status(500).send("Error inserting post.");
+        uploadedFile.mv(targetPath, (err) => {
+            if (err) {
+                console.error("Fel vid uppladdning av filen: ", err);
+               // res.status(500).send("Error inserting post.");
             } else {
-                res.send("Post added successfully!");
+                //Insert till databas?
+                const postinlaggQuery = `INSERT INTO posts (UserID, Image, Info, Choice) VALUES (?,?,?,?)`;
+                // Väljer UserID baserat på Username= odefinierad variabel userID.
+                connection.query(postinlaggQuery, [userR.UserID, uploadedFile.name, text, val], (error, results) => {
+                    if (error) {
+                        console.error("Error inserting post into database: ", error);
+                        res.status(500).send("Error inserting post.");
+                    } else {
+                        //res.send("Post added successfully!");
+                    }
+                });
             }
         });
 
@@ -64,7 +72,7 @@ app.post("/posta-inlagg", async function (req, res) {
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
-}); */
+}); 
 
 const PORT = process.env.PORT || 5000;
 
