@@ -29,6 +29,31 @@ const routes = require("./routes");
 app.use("/", routes);
 
 app.use(fileUpload());
+
+// Route för att hämta users profilbild 
+app.get("/profile", async (req, res) => {
+    try {
+        const userID = req.session.userID;
+        const profileQuery = `SELECT ProfilePicture FROM users WHERE userID = ?`;
+        connection.query(profileQuery, [userID], (error, results) => {
+            if (error) {
+                console.error("Error fetching profile picture from database:", error);
+                res.status(500).send("Error fetching profile picture.");
+                return;
+            }
+            if (results.length > 0) {
+                const profilePicture = results[0].ProfilePicture; 
+                res.render("profile", { profilePicture });
+            } else {
+                res.status(404).send("User not found.");
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching profile picture:", error);
+        res.status(500).send("Internal Server Error"); 
+    }
+});
+
 app.post("/posta-inlagg", async function (req, res) {
     try {
         // Saknar bilden, måste lägga till den från filen som du klickar submit på (så text, val, bild?) a
@@ -372,6 +397,7 @@ app.post("/feed", async (req, res) => {
         likesUser: userLikes,
         userData: userR,
         popupLikes: dataPopup,
+        profilePicture: req.session.profilePicture
     });
 });
 

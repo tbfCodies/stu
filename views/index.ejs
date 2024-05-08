@@ -33,14 +33,18 @@
             </div>
 
             <% data[0].forEach(post => { %>
-            <div class="post" id="<%= post.PostID %>">
-                <div class="user-info">
-                    <img
-                        class="profile-picture"
-                        src="<%= post.ProfilePicture %>"
-                    />
-                    <h3 class="username"><%= post.Username %></h3>
-                </div>
+                <div class="post" id="<%= post.PostID %>">
+                    <% if (post.ProfilePicture) { %>
+                        <div class="user-info">
+                            <!-- Visa användarprofilbild -->
+                            <img class="ProfilePicture" src="<%= post.ProfilePicture %>" alt="Profile Picture" />
+                            <h3 class="username"><%= post.Username %></h3>
+                        </div>
+                    <% } else { %>
+                        <div class="user-info">
+                            <h3 class="username"><%= post.Username %></h3>
+                        </div>
+                    <% } %>
 
                 <div class="post-content">
                     <% if (post.Image) { %>
