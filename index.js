@@ -30,19 +30,22 @@ app.use("/", routes);
 
 app.use(fileUpload());
 
-// Route för att hämta users profilbild 
+// Route för att hämta users profilbild
 app.get("/profile", async (req, res) => {
     try {
         const userID = req.session.userID;
         const profileQuery = `SELECT ProfilePicture FROM users WHERE userID = ?`;
         connection.query(profileQuery, [userID], (error, results) => {
             if (error) {
-                console.error("Error fetching profile picture from database:", error);
+                console.error(
+                    "Error fetching profile picture from database:",
+                    error
+                );
                 res.status(500).send("Error fetching profile picture.");
                 return;
             }
             if (results.length > 0) {
-                const profilePicture = results[0].ProfilePicture; 
+                const profilePicture = results[0].ProfilePicture;
                 res.render("profile", { profilePicture });
             } else {
                 res.status(404).send("User not found.");
@@ -50,7 +53,7 @@ app.get("/profile", async (req, res) => {
         });
     } catch (error) {
         console.error("Error fetching profile picture:", error);
-        res.status(500).send("Internal Server Error"); 
+        res.status(500).send("Internal Server Error");
     }
 });
 
@@ -321,7 +324,6 @@ app.get("/feed/:id", async (req, res) => {
 
 // Skapa nytt inlägg sida
 app.get("/createpost", async (req, res) => {
-
     const userInfo = require("./public/temp/user.json");
 
     let userR;
@@ -331,6 +333,7 @@ app.get("/createpost", async (req, res) => {
 
     res.render("skapainlagg", {
         userData: userR,
+        profilePicture: userR.ProfilePicture,
     });
 });
 
@@ -365,6 +368,7 @@ app.get("/feed", async (req, res) => {
         likesUser: userLikes,
         userData: userR,
         popupLikes: dataPopup,
+        profilePicture: userR.ProfilePicture,
     });
 });
 
@@ -397,7 +401,7 @@ app.post("/feed", async (req, res) => {
         likesUser: userLikes,
         userData: userR,
         popupLikes: dataPopup,
-        profilePicture: req.session.profilePicture
+        profilePicture: userR.ProfilePicture,
     });
 });
 
