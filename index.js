@@ -59,60 +59,61 @@ app.get("/profile", async (req, res) => {
 
 app.post("/posta-inlagg", async function (req, res) {
     try {
-        // Saknar bilden, måste lägga till den från filen som du klickar submit på (så text, val, bild?) a
-        const { text, val, bild } = req.body;
+        // Hämta text och val från request body
+        const { text, val } = req.body;
 
-        // Här hämtar du användarens ID från login sidan
+        // Hämta användarens information från sessionen
         const userInfo = require("./public/temp/user.json");
-        let userR; // Detta är användaren (Du kan kalla den som userR.UserID eller userR.Username osv. Referera till /temp/user.json för att se vad som finns där.) (Denna uppdateras vid login.)
+        let userR;
         userInfo.forEach((user) => {
             userR = user;
         });
 
-        //Spara bilden i uploads?
-        const uploadedFile = req.files.bild;
-        const targetPath = path.join(
-            __dirname,
-            "public",
-            "uploads",
-            uploadedFile.name
-        );
+        let builderPath = null;
 
-        let builderPath = `../uploads/${uploadedFile.name}`;
+        // Kontrollera om bild laddades upp
+        if (req.files && req.files.bild) {
+            // Spara den uppladdade bilden i uploads
+            const uploadedFile = req.files.bild;
+            const targetPath = path.join(
+                __dirname,
+                "public",
+                "uploads",
+                uploadedFile.name
+            );
+            builderPath = `../uploads/${uploadedFile.name}`;
 
-        uploadedFile.mv(targetPath, (err) => {
-            if (err) {
-                console.error("Fel vid uppladdning av filen: ", err);
-                // res.status(500).send("Error inserting post.");
-            } else {
-                //Insert till databas?
-                const postinlaggQuery = `INSERT INTO posts (UserID, Image, Info, Choice) VALUES (?,?,?,?)`;
-                // Väljer UserID baserat på Username= odefinierad variabel userID.
-                connection.query(
-                    postinlaggQuery,
-                    [userR.UserID, builderPath, text, val],
-                    (error, results) => {
-                        if (error) {
-                            console.error(
-                                "Error inserting post into database: ",
-                                error
-                            );
-                            res.status(500).send("Error inserting post.");
-                        } else {
-                            //res.send("Post added successfully!");
-                        }
-                    }
-                );
+            uploadedFile.mv(targetPath, (err) => {
+                if (err) {
+                    console.error("Fel vid uppladdning av filen: ", err);
+                    res.status(500).send("Error uploading file.");
+                    return;
+                }
+            });
+        }
+
+        // Insert till databas
+        const postinlaggQuery = `INSERT INTO posts (UserID, Image, Info, Choice) VALUES (?,?,?,?)`;
+        connection.query(
+            postinlaggQuery,
+            [userR.UserID, builderPath, text, val],
+            (error, results) => {
+                if (error) {
+                    console.error("Error inserting post into database: ", error);
+                    res.status(500).send("Error inserting post.");
+                    return;
+                }
+                // Lyckad insättning av inlägg
+                // Omdirigera användaren tillbaka till flödessidan efter att posten har lagts till i databasen
+                res.redirect("/feed");
             }
-        });
-
-        // Tbx till startsidan?? (Yes! Helt korrekt - om detta inte fungerar kan du göra att HTML skickar dig till /feed istället genom href.)
-        res.redirect("/feed");
+        );
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
 });
+
 
 const PORT = process.env.PORT || 5000;
 
