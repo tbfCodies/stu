@@ -77,23 +77,23 @@
 .popup-form button[type="submit"] {
     width: 80px;
     padding: 8px;
-    background-color: #007bff;
+    background-color: #ff9800;
     color: #fff;
     border: none;
-    border-radius: 3px;
+    border-radius: 20px;
     cursor: pointer;
 }
 
 .popup-form button[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #f57c00;
+
 }
 
 /* Menyn till vänster*/
 .left-menu {
     width: 20%;
     height: 100%;
-    background-color: #e0e0e0;
-    /*background-color: #aeefff;*/
+    background-color: #CAE4F6;
     position: fixed;
 }
 /*Loggan*/
@@ -199,7 +199,7 @@ li:focus {
     z-index: 1000;
     top: 0;
     right: 0;
-    background-color: #e0e0e0;
+    background-color: #CAE4F6;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
@@ -276,7 +276,7 @@ li:focus {
     .header {
         height: auto;
         width: 100%;
-        background-color: #e0e0e0;
+        background-color: #CAE4F6;
         box-shadow: 0px 1px 0px #ada5a5, 0px -1px 0px #888;
         display: flex;
         justify-content: space-between;
@@ -354,7 +354,7 @@ li:focus {
         position: fixed;
         bottom: 0px;
         padding: 3px;
-        background-color: #f0f0f0;
+        background-color: #CAE4F6;
         box-shadow: 0px 2px 0px #ada5a5, 0px -2px 0px #888;
         z-index: 90;
     }
