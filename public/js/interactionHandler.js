@@ -8,8 +8,6 @@ function getCookie(name) {
             // Remove the prefix "username" if it exists
             if (username.startsWith("username")) {
                 return username.substring("username".length);
-                // or
-                // return username.slice("username".length);
             }
             return username;
         }
@@ -26,8 +24,7 @@ likeIcons.forEach((likeIcon) => {
             e.currentTarget.closest(".interaction-like").childNodes[1].id;
         const path = e.currentTarget.closest(".interaction-like").childNodes[1];
 
-        console.log(path);
-
+        // Change the heart icon based on the current state
         if (pathID == "liked") {
             path.style.backgroundImage = "url('/assets/heart-empty.svg')";
             path.style.backgroundSize = "cover";
@@ -39,7 +36,10 @@ likeIcons.forEach((likeIcon) => {
             path.id = "liked";
         }
 
+        // Change the window location to refresh the page
         window.location.href = `/feed`;
+
+        // Call the like function
         like(id, username);
     });
 });
@@ -81,6 +81,11 @@ const setCookie = (name, value, days) => {
     document.cookie = cookieValue;
 };
 
+/*
+    @param {string} dateString
+
+    @description Formats the date to be displayed as "x days ago" or "x hours ago"
+*/
 function formatDate(dateString) {
     const date = new Date(dateString);
     const now = new Date();
@@ -105,6 +110,11 @@ function formatDate(dateString) {
     return timeReturn;
 }
 
+/*
+    @param {string} id
+
+    @description Fetches comments from the database
+*/
 function loadComments(id) {
     fetch("/fetchComments")
         .then((response) => {
@@ -114,8 +124,7 @@ function loadComments(id) {
             return response.json();
         })
         .then((postData) => {
-            // Popup ID
-
+            // Loop through the comments and display them
             postData.forEach((post, index) => {
                 if (post.PostID == id) {
                     const popupDate = formatDate(post.CommentedAt);
@@ -152,6 +161,12 @@ function loadComments(id) {
         });
 }
 
+/*
+    @param {string} id
+    @param {string} username
+
+    @description Opens a popup to comment on a post
+*/
 const comment = (id, username) => {
     // popup meny
     const popup = document.querySelector(".popup-menu");
@@ -176,9 +191,10 @@ const comment = (id, username) => {
 
     const form = popup.querySelector(".popup-form");
     form.addEventListener("submit", (e) => {
-        e.preventDefault(true);
-        const comment = form.querySelector("input").value;
+        e.preventDefault(true); // Prevent the form from submitting
+        const comment = form.querySelector("input").value; // Retrieve the comment from the input field
         if (comment !== "") {
+            // Ensure the comment is not empty
             const postId = popup.dataset.postId; // Retrieve the PostID from the popup
             commentPost(postId, username, comment);
 
@@ -187,11 +203,19 @@ const comment = (id, username) => {
             popup.style.display = "none";
             document.body.style.overflow = "auto";
 
+            // Change the window location to refresh the page
             window.location.href = `/feed`;
         }
     });
 };
 
+/*
+    @param {string} id
+    @param {string} username
+    @param {string} comment
+
+    @description Sends a POST request to comment on a post
+*/
 const commentPost = (id, username, comment) => {
     fetch("/comment", {
         method: "POST",
@@ -211,6 +235,12 @@ const commentPost = (id, username, comment) => {
         });
 };
 
+/*
+    @param {string} id
+    @param {string} username
+
+    @description Sends a POST request to like a post
+*/
 const like = (id, username) => {
     fetch("/like", {
         method: "POST",

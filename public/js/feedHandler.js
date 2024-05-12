@@ -1,13 +1,12 @@
 const express = require("express");
 const { connection, connectDB } = require("../../database");
 
-// 0. when the page is loaded for the first time, load 10-15 posts
-// 1. 10-15 posts, then load the page and location.reload()
-// 2. liked or commented, update the page location.reload()
-// 3. if commented, update the page instantly - so the comment shows within the popup-menu
+/*
+    @param {string} username
+    @returns {Promise}
 
-// username { username }
-
+    @description Fetches user information from the database
+*/
 const fetchUserInfo = async (username) => {
     try {
         const userQuery = `SELECT * FROM users WHERE Username = ?`;
@@ -19,6 +18,12 @@ const fetchUserInfo = async (username) => {
     }
 };
 
+/*
+    @param {string} choice
+    @returns {Promise}
+
+    @description Fetches posts from the database
+*/
 const choiceSelect = (selection) => {
     let campusQuery;
     if (selection == "campus") {
@@ -29,6 +34,12 @@ const choiceSelect = (selection) => {
     return campusQuery;
 };
 
+/*
+    @param {string} choice
+    @returns {Promise}
+
+    @description Fetches posts from the database
+*/
 const fetchPosts = async (choice) => {
     try {
         const campusQuery = choiceSelect(choice);
@@ -41,6 +52,12 @@ const fetchPosts = async (choice) => {
     }
 };
 
+/*
+    @param {string} postID
+    @returns {Promise}
+
+    @description Fetches comments from the database
+*/
 const fetchComments = async (postID) => {
     try {
         const commentQuery = `SELECT * FROM comments JOIN users WHERE comments.UserID=users.UserID`;
@@ -52,6 +69,12 @@ const fetchComments = async (postID) => {
     }
 };
 
+/*
+    @param {string} postID
+    @returns {Promise}
+
+    @description Fetches likes from the database
+*/
 const fetchLikes = async (postID) => {
     try {
         let likeQuery = "";
@@ -67,6 +90,12 @@ const fetchLikes = async (postID) => {
     }
 };
 
+/*
+    @param {string} postID
+    @returns {Promise}
+
+    @description Fetches likes from the database
+*/
 const fetchPostLikes = async () => {
     try {
         let likeQuery = `SELECT * FROM likes JOIN users ON likes.UserID=users.UserID`;

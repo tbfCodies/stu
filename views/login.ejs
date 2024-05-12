@@ -1,41 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>StU - Login</title>
-    <link rel="stylesheet" href="css/login.css" />
-  </head>
-  <body>
-    <div class="login-container">
-      <div class="login-box">
-        <h1>Login</h1>
-        <form
-          id="loginForm"
-          action="/feed"
-          method="POST"
-          enctype="application/x-www-form-urlencoded"
-        >
-          <input
-            type="text"
-            id="username"
-            placeholder="Username"
-            name="username"
-            required
-          />
-          <button type="submit" class="btn">Login</button>
-        </form>
-      </div>
-    </div>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>StU - Login</title>
+        <link rel="stylesheet" href="css/login.css" />
+    </head>
+    <body>
+        <div class="login-container">
+            <div class="login-box">
+                <h1>Login</h1>
+                <form
+                    id="loginForm"
+                    action="/feed"
+                    method="POST"
+                    enctype="application/x-www-form-urlencoded"
+                >
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Username"
+                        name="username"
+                        required
+                    />
+                    <button type="submit" class="btn">Login</button>
+                </form>
+            </div>
+        </div>
+    </body>
 
-  <script>
-    const loginForm = document.getElementById("loginForm");
+    <script>
+        // Fetch the login form
+        const loginForm = document.getElementById("loginForm");
 
-    loginForm.addEventListener("submit", function (event) {
-      const username = document.getElementById("username").value;
-      document.cookie = `username=${username}; expires=Thu, 18 Dec 2025 12:00:00 UTC`;
-      event.stopPropagation();
-    });
-  </script>
+        // Check if the form is submitted - if so set the username cookie
+        loginForm.addEventListener("submit", function (event) {
+            const username = document.getElementById("username").value;
+            document.cookie = `username=${username}; expires=Thu, 18 Dec 2025 12:00:00 UTC`;
+            event.stopPropagation();
+        });
+    </script>
 </html>

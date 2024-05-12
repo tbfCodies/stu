@@ -19,16 +19,23 @@ app.use(
     })
 );
 
+// Specify the view engine
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
+// Middleware to parse the request body
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Routes
 const routes = require("./routes");
 app.use("/", routes);
 
+// Middleware to parse file uploads
 app.use(fileUpload());
+
+// PORT
+const PORT = process.env.PORT || 5000;
 
 // Route för att hämta users profilbild
 app.get("/profile", async (req, res) => {
@@ -57,6 +64,7 @@ app.get("/profile", async (req, res) => {
     }
 });
 
+// Route för att skapa ett nytt inlägg
 app.post("/posta-inlagg", async function (req, res) {
     try {
         // Hämta text och val från request body
@@ -69,6 +77,7 @@ app.post("/posta-inlagg", async function (req, res) {
             userR = user;
         });
 
+        // Sätt bildens sökväg till null som standard
         let builderPath = null;
 
         // Kontrollera om bild laddades upp
@@ -99,7 +108,10 @@ app.post("/posta-inlagg", async function (req, res) {
             [userR.UserID, builderPath, text, val],
             (error, results) => {
                 if (error) {
-                    console.error("Error inserting post into database: ", error);
+                    console.error(
+                        "Error inserting post into database: ",
+                        error
+                    );
                     res.status(500).send("Error inserting post.");
                     return;
                 }
@@ -113,9 +125,6 @@ app.post("/posta-inlagg", async function (req, res) {
         res.status(500).send("Internal Server Error");
     }
 });
-
-
-const PORT = process.env.PORT || 5000;
 
 // Huvudsidan för att logga in
 app.get("/", (req, res) => {
@@ -146,6 +155,7 @@ app.post("/comment", (req, res) => {
     );
 });
 
+// Hämta kommentarer och skicka tillbaka till klienten som JSON
 app.get("/fetchComments", (req, res) => {
     const { fetchComments } = require("./public/js/feedHandler");
     fetchComments().then((data) => {
@@ -153,6 +163,7 @@ app.get("/fetchComments", (req, res) => {
     });
 });
 
+// Lägger till en gilla-markering i databasen för ett inlägg med ett visst userID
 const addLike = async (id, username) => {
     const insertQuery = `INSERT INTO likes (PostID, UserID) SELECT ?, UserID FROM users WHERE Username = ?`;
     connection.query(insertQuery, [id, username], (error, results, fields) => {
@@ -163,6 +174,7 @@ const addLike = async (id, username) => {
     });
 };
 
+// Tar bort en gilla-markering i databasen för ett inlägg med ett visst userID
 const removeLike = async (id, username) => {
     const deleteQuery = `DELETE FROM likes WHERE PostID = ? AND UserID = (SELECT UserID FROM users WHERE Username = ?)`;
     connection.query(deleteQuery, [id, username], (error, results, fields) => {
@@ -173,6 +185,7 @@ const removeLike = async (id, username) => {
     });
 };
 
+// Kontrollerar om användaren redan har gillat inlägget
 const checkIfLiked = async (id, username) => {
     const checkQuery = `SELECT * FROM likes WHERE PostID = ? AND UserID = (SELECT UserID FROM users WHERE Username = ?)`;
     return new Promise((resolve, reject) => {
@@ -190,6 +203,7 @@ const checkIfLiked = async (id, username) => {
     });
 };
 
+// Lägger till eller tar bort en gilla-markering för ett inlägg
 app.post("/like", async (req, res) => {
     const { id, username } = req.body;
     try {
@@ -204,63 +218,78 @@ app.post("/like", async (req, res) => {
     }
 });
 
+// Hämtar alla inlägg från databasen
 const countComments = async (posts) => {
     const { fetchComments } = require("./public/js/feedHandler");
-    const length = await fetchComments();
+    const length = await fetchComments(); // Hämtar alla kommentarer
 
     let arr = []; // return arr
 
+    // Loopar igenom alla inlägg och räknar antalet kommentarer
     posts[0].forEach((post) => {
         const postID = post.PostID;
         let commentNr = 0;
 
+        // Loopar igenom alla kommentarer och räknar antalet kommentarer för varje inlägg
         length[0].forEach((comment) => {
+            // Om kommentarens PostID är samma som inläggets PostID
             if (comment.PostID == postID) {
                 commentNr++;
             }
         });
 
+        // Pushar inläggets PostID och antalet kommentarer till arr
         arr.push({
             PostID: postID,
             count: commentNr,
         });
     });
 
+    // Returnerar arr
     return arr;
 };
 
+// Räknar antalet gilla-markeringar för varje inlägg
 const countLikes = async (posts) => {
     const { fetchLikes } = require("./public/js/feedHandler");
     const length = await fetchLikes();
 
     let arr = []; // return arr
 
+    // Loopar igenom alla inlägg och räknar antalet gilla-markeringar
     posts[0].forEach((post) => {
         const postID = post.PostID;
         let likeNr = 0;
 
+        // Loopar igenom alla gilla-markeringar och räknar antalet gilla-markeringar för varje inlägg
         length[0].forEach((like) => {
+            // Om gilla-markeringens PostID är samma som inläggets PostID
             if (like.PostID == postID) {
                 likeNr++;
             }
         });
 
+        // Pushar inläggets PostID och antalet gilla-markeringar till arr
         arr.push({
             PostID: postID, // 0
             count: likeNr, // 1
         });
     });
 
+    // Returnerar arr
     return arr;
 };
 
+// Kontrollerar om användaren har gillat inlägget
 const checkLiked = async (userID) => {
     const { fetchLikes } = require("./public/js/feedHandler");
     const length = await fetchLikes();
 
     let userLike = [];
 
+    // Loopar igenom alla gilla-markeringar och kollar om användaren har gillat inlägget
     length[0].forEach((like) => {
+        // Om gilla-markeringens UserID är samma som användarens UserID
         if (like.UserID == userID) {
             userLike.push({
                 PostID: like.PostID,
@@ -269,21 +298,26 @@ const checkLiked = async (userID) => {
         }
     });
 
+    // Returnerar userLike
     return userLike;
 };
 
+// Skapar en temporär JSON-fil för att ladda användarens information
 const tempLoad = async (username) => {
     const { fetchUserInfo } = require("./public/js/feedHandler");
     const userData = await fetchUserInfo(username);
 
+    // Skapar en temporär JSON-fil för att ladda användarens information
     const jsonData = JSON.stringify(userData[0]);
     try {
+        // Skriver användarens information till en temporär JSON-fil
         await fs.writeFileSync("./public/temp/user.json", jsonData);
     } catch (err) {
         console.error(err);
     }
 };
 
+// Hämtar alla gilla-markeringar för varje inlägg
 const popupData = async () => {
     const { fetchPostLikes } = require("./public/js/feedHandler");
     const postsFetch = await fetchPostLikes();
@@ -310,6 +344,7 @@ const popupData = async () => {
     return result;
 };
 
+// Route för att kunna lätt filtera flödet - standard är campus
 app.get("/feed/:id", async (req, res) => {
     const { id } = req.params;
 
@@ -327,11 +362,13 @@ app.get("/feed/:id", async (req, res) => {
 app.get("/createpost", async (req, res) => {
     const userInfo = require("./public/temp/user.json");
 
+    // Hämta användarens information från sessionen
     let userR;
     userInfo.forEach((user) => {
         userR = user;
     });
 
+    // Rendera sidan för att skapa nytt inlägg
     res.render("skapainlagg", {
         userData: userR,
         profilePicture: userR.ProfilePicture,
@@ -348,19 +385,21 @@ app.get("/feed", async (req, res) => {
         choice = val.toLowerCase();
     }
 
+    // Imports
     const { fetchPosts } = require("./public/js/feedHandler");
     const userInfo = require("./public/temp/user.json");
     const postData = await fetchPosts(choice); // campus, vanner, kontakt
     const arr = await countComments(postData);
     const likes = await countLikes(postData);
-
     const dataPopup = await popupData();
 
+    // Hämta användarens information från sessionen
     let userR;
     userInfo.forEach((user) => {
         userR = user;
     });
 
+    // Kontrollera om användaren har gillat inlägget
     const userLikes = await checkLiked(userR.UserID);
     res.render("index", {
         data: postData,
@@ -378,13 +417,12 @@ app.post("/feed", async (req, res) => {
     const { username } = req.body;
     tempLoad(username);
 
+    // Imports
     const { fetchPosts } = require("./public/js/feedHandler");
     const userInfo = require("./public/temp/user.json");
-
     const postData = await fetchPosts("campus");
     const arr = await countComments(postData);
     const likes = await countLikes(postData);
-
     const dataPopup = await popupData();
 
     let userR;

@@ -9,6 +9,7 @@
     </head>
     <body>
         <!--Laddar in nav-menyn-->
+        <!-- Partials -->
         <%- include('reuse/huvudmeny') %> <%- include('reuse/header') %>
 
         <div class="main-content">
@@ -18,6 +19,7 @@
                 <button class="kontakterBTN">Kontakter</button>
             </div>
 
+            <!-- Popup menu -->
             <div class="popup-menu">
                 <button class="close-popup">X</button>
                 <div class="left-section">
@@ -32,21 +34,28 @@
                 </div>
             </div>
 
+            <!-- Main page - flödet -->
             <% data[0].forEach(post => { %>
-                <div class="post" id="<%= post.PostID %>">
-                    <% if (post.ProfilePicture) { %>
-                        <div class="user-info">
-                            <!-- Visa användarprofilbild -->
-                            <img class="ProfilePicture" src="<%= post.ProfilePicture %>" alt="Profile Picture" />
-                            <h3 class="username"><%= post.Username %></h3>
-                        </div>
-                    <% } else { %>
-                        <div class="user-info">
-                            <h3 class="username"><%= post.Username %></h3>
-                        </div>
-                    <% } %>
+            <div class="post" id="<%= post.PostID %>">
+                <% if (post.ProfilePicture) { %>
+                <div class="user-info">
+                    <!-- Visa användarprofilbild -->
+                    <img
+                        class="ProfilePicture"
+                        src="<%= post.ProfilePicture %>"
+                        alt="Profile Picture"
+                    />
+                    <h3 class="username"><%= post.Username %></h3>
+                </div>
+                <% } else { %>
+                <div class="user-info">
+                    <h3 class="username"><%= post.Username %></h3>
+                </div>
+                <% } %>
 
+                <!-- Main content for flödet -->
                 <div class="post-content">
+                    <!-- Check if there's an image in the body, if not display pure text ? otherwise display image -->
                     <% if (post.Image) { %>
                     <img
                         class="post-image"
@@ -58,22 +67,31 @@
                     <% } %>
                 </div>
 
+                <!-- Like & Comment button actions -->
+                <!-- Loops through all interactions to all postIDs, and check if one matches - then fetches the information for that specific post (count of likes and comments ect) -->
                 <div class="post-interactions" id="<%= post.PostID %>">
                     <div class="interaction-like">
+                        <!-- Like button -->
                         <% let liked = false; %> <% likesUser.forEach(uLike => {
                         %> <% for (let i = 0; i < likesUser.length; i++) { %> <%
                         if (likesUser[i].UserID == userData.UserID &&
                         likesUser[i].PostID == post.PostID && liked == false) {
                         %>
+
+                        <!-- If user has liked the post, display the like icon -->
                         <p class="like-icon" id="liked"></p>
                         <% liked = true; %> <% } %> <% } %> <% }); %> <%
                         if(!liked) { %>
+
+                        <!-- If user hasn't liked the post, display the unlike icon -->
                         <p class="like-icon" id="unliked"></p>
                         <% } %> <% let hasLikes = false; %> <%
                         likeData.forEach(like => { %> <% for (let i = 0; i <
                         likeData.length; i++) { %> <% if (likeData[i].PostID ==
                         post.PostID && likeData[i].count > 0 && hasLikes ==
                         false) { %>
+
+                        <!-- Check if there's likes on the post, if not display 0 likes -->
                         <p class="like-count"><%= likeData[i].count %> likes</p>
                         <% hasLikes = true; %> <% } %> <% } %> <% }); %> <% if
                         (!hasLikes) { %>
@@ -81,12 +99,15 @@
                         <% } %>
                     </div>
 
+                    <!-- Comment button -->
                     <div class="interaction-comment">
                         <img
                             class="comment-icon"
                             src="/assets/message-square.svg"
                             alt="message bubble icon"
                         />
+
+                        <!-- Check if there's comments on the post, if not display 0 comments -->
                         <% let hasComments = false; %> <%
                         commentData.forEach(cmd => { %> <% if (cmd.PostID ==
                         post.PostID) { %>
@@ -97,11 +118,13 @@
                         <% } %>
                     </div>
 
+                    <!-- Time created -->
                     <div class="interaction-time">
                         <p data-timestamp="<%= post.CreatedAt %>"></p>
                     </div>
                 </div>
 
+                <!-- Post image condition -->
                 <% if (post.Image) { %>
                 <div class="post-description">
                     <p><%= post.Info %></p>
@@ -111,9 +134,11 @@
             <% }); %>
         </div>
 
+        <!-- Partials -->
         <%- include('reuse/bottenmeny') %>
 
         <!--Laddar in sidomenyn till höger med vänförslag-->
+        <!-- Partials -->
         <%- include('reuse/forslagsmeny') %>
 
         <script src="js/script.js"></script>
