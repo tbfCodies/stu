@@ -23,10 +23,10 @@
             <div class="popup-menu">
                 <button class="close-popup">X</button>
                 <div class="left-section">
-                    <h1>Comment</h1>
+                    <h1>Kommentarer</h1>
                     <form class="popup-form" action="POST">
-                        <input type="text" placeholder="Enter your comment" />
-                        <button type="submit">Post</button>
+                        <input type="text" placeholder="Skriv en kommentar" />
+                        <button type="submit">Skicka</button>
                     </form>
                 </div>
                 <div class="right-section">
@@ -111,10 +111,10 @@
                         <% let hasComments = false; %> <%
                         commentData.forEach(cmd => { %> <% if (cmd.PostID ==
                         post.PostID) { %>
-                        <p class="comment-count"><%= cmd.count %> comments</p>
+                        <p class="comment-count"><%= cmd.count %> kommentarer</p>
                         <% hasComments = true; %> <% } %> <% }); %> <% if
                         (!hasComments) { %>
-                        <p class="comment-count">0 comments</p>
+                        <p class="comment-count">0 kommentarer</p>
                         <% } %>
                     </div>
 
