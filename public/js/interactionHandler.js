@@ -56,19 +56,27 @@ commentIcons.forEach((commentIcon) => {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const timestamps = document.querySelectorAll("[data-timestamp]");
+        const timestamps = document.querySelectorAll("[data-timestamp]");
     timestamps.forEach((timestamp) => {
         const timestampValue = new Date(timestamp.dataset.timestamp);
-        const currentTime = new Date();
-        const timeDifference = currentTime - timestampValue;
+        const currentTime = new Date()
+        const currentUTCTime = currentTime.getTime();
+        const swedishTimezoneOffset = 120; // CET is UTC+1
+        const swedishTime = new Date(currentUTCTime + (swedishTimezoneOffset * 60000));
+        
+        const timeDifference = swedishTime - timestampValue;
+        const minutesDifference = Math.floor(timeDifference / (1000 * 60));
         const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
 
-        if (hoursDifference < 24) {
-            timestamp.textContent = hoursDifference + " dagar sedan";
+        if (minutesDifference < 60) {
+            timestamp.textContent = minutesDifference + " minutes ago";
+            timestamp.classList.add("minutes-ago");
+        } else if (hoursDifference < 24) {
+            timestamp.textContent = hoursDifference + " hours ago";
             timestamp.classList.add("hours-ago");
         } else {
             const daysDifference = Math.floor(hoursDifference / 24);
-            timestamp.textContent = daysDifference + " dagar sedan";
+            timestamp.textContent = daysDifference + " days ago";
             timestamp.classList.add("days-ago");
         }
     });
@@ -81,15 +89,15 @@ const setCookie = (name, value, days) => {
     document.cookie = cookieValue;
 };
 
-/*
-    @param {string} dateString
-
-    @description Formats the date to be displayed as "x days ago" or "x hours ago"
-*/
 function formatDate(dateString) {
     const date = new Date(dateString);
     const now = new Date();
-    const diffInMs = now - date;
+    
+    const currentUTCTime = now.getTime();
+    const swedishTimezoneOffset = 120; // CET is UTC+1
+    const swedishTime = new Date(currentUTCTime + (swedishTimezoneOffset * 60000));
+    
+    const diffInMs = swedishTime - date;
 
     let timeReturn;
     const minutes = Math.floor(diffInMs / (1000 * 60));
@@ -109,7 +117,6 @@ function formatDate(dateString) {
     timeReturn = `${minutes} minutes ago`;
     return timeReturn;
 }
-
 /*
     @param {string} id
 
