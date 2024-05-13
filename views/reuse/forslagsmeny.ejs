@@ -1,11 +1,13 @@
 <!--Sidomeny till höger som går att stänga-->
-<div class="openrightmenu"> <!--pil ikon som går att klicka på-->
+<div class="openrightmenu"> <!--pil ikon som går att klicka på, anropar en funktion-->
     <span id="opensideicon" onclick="openSuggestionsMeny()">&#8678</span>
 </div>
 
 <div id="suggestions">
+    <!--Anropar funktion för att stänga meny när man klickar på X-->
     <a href="javascript:void(0)" class="closebtn" onclick="closeSuggestionsMeny()">&times;</a>
 
+    <!--Rubrik och lista med innehåll, bild + namn-->
     <h3>Känner du?</h3>
     <ul>
         <li><img src="assets/sideprofile-pic.svg" alt="" /><a href="">Hanna</a></li>

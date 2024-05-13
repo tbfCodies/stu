@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html> <!--HTML sida för att skapa ett inlägg och posta det-->
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/index.css" />
   </head>
   <body>
-    <!--Ladda in nav-menyn-->
+    <!--Ladda in huvudmenyn på stora skärmar-->
     <%- include('reuse/huvudmeny') %> <%- include('reuse/header') %>
 
     <!--Container för att skapa och posta ett inlägg-->
@@ -23,6 +23,7 @@
 
         <h2>Skapa inlägg</h2>
         <!--formulär för att skapa ett inlägg-->
+        <!--metod POST för att posta till databas-->
         <form
           id="skapa-inlagg-form"
           action="/posta-inlagg"
@@ -30,7 +31,7 @@
           enctype="multipart/form-data"
         >
           <div class="skapa-inlagg-grupp">
-            <!--Ladda upp en fil = bild-->
+            <!--Fält för att ladda upp en bild-->
             <label for="bild">Ladda upp bild:</label>
             <input
               type="file"
@@ -47,7 +48,7 @@
             <textarea id="text" name="text" rows="4" cols="50"></textarea>
           </div>
 
-          <!--Val att dela med Campus eller Vänner-->
+          <!--Val att dela med Campus, Vänner eller Kontakter-->
           <div class="skapa-inlagg-grupp">
             <label for="val">Dela med:</label>
             <select id="val" name="val" required>
@@ -57,14 +58,16 @@
             </select>
           </div>
 
-          <!--Knapp för att posta-->
+          <!--Knapp för att posta inlägget-->
           <button id="postainlagg-knapp" type="submit" class="btn">
             Posta inlägg
           </button>
         </form>
       </div>
     </div>
+    <!--laddar in bottenmenyn på små skärmar-->
     <%- include('reuse/bottenmeny') %>
+    <!--Länk till javascript fil-->
     <script src="js/skapainlagg.js"></script>
   </body>
 </html>
