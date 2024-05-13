@@ -53,6 +53,7 @@ select {
     cursor: pointer;
     font-size: 16px;
 }
+/*Hover effekt*/
 #postainlagg-knapp:hover {
     background-color: #f57c00;
 }

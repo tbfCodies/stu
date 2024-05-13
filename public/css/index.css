@@ -1,3 +1,4 @@
+/*Nollställer marginaler och padding, anger typsnitt för allt*/
 * {
     margin: 0;
     padding: 0;
@@ -89,7 +90,7 @@
 
 }
 
-/* Menyn till vänster*/
+/* Huvudmenyn till vänster (stor skärm)*/
 .left-menu {
     width: 20%;
     height: 100%;
@@ -101,19 +102,20 @@
     display: block;
     width: 60%;
 }
+/*Ikonerna i menyn*/
 .navbar img {
     width: 30px;
     height: 30px;
     margin-right: 5%;
 }
-
+/*Profilbilden i menyn*/
 #profilnav img {
     border-radius: 50%;
     width: 40px;
     height: 40px;
     margin-right: 5%;
 }
-
+/*Etiketterna i menyn*/
 .navbar ul {
     list-style-type: none;
     padding-left: 1rem;
@@ -131,6 +133,7 @@
     display: block;
     padding: 20px;
 }
+/*Hover effekt på etiketterna*/
 .navbar ul li:hover,
 li:focus {
     background-color: rgb(255, 255, 255, 0.6);
@@ -145,7 +148,7 @@ li:focus {
     height: 100%;
 }
 
-/* Campus & vänner knapparna */
+/* Campus, vänner och kontakt knapparna */
 .filter {
     padding: 10px;
 }
@@ -174,24 +177,28 @@ li:focus {
     margin: auto;
 }
 
-/*Style för menyn till höger, vänförslag*/
+/*Style för gömda menyn till höger, vänförslag*/
+/*Rubriken i menyn*/
 #suggestions h3 {
     margin-left: 20px;
     padding: 8px 8px 0 2px;
     margin-bottom: 10px;
 }
+/*Position för ikonen att öpnna menyn*/
 .openrightmenu {
     position: fixed;
     top: 10px;
     right: 10px;
     z-index: 999;
 }
+/*Ikonen för att öppna menyn*/
 #opensideicon {
     font-size: 4em;
     cursor: pointer;
     font-family: Arial;
     color: #666;
 }
+/*Menyn när den syns*/
 #suggestions {
     height: 100%;
     position: fixed;
@@ -204,11 +211,10 @@ li:focus {
     transition: 0.5s;
     padding-top: 60px;
 }
-
 #suggestions.open {
     width: 16%;
 }
-
+/*Innehållet i menyn, bild + namn*/
 #suggestions img {
     width: 30px;
     height: 30px;
@@ -230,10 +236,12 @@ li:focus {
     display: block;
     padding: 10px;
 }
+/*Hover effekt på innehållet i menyn*/
 #suggestions ul li:hover,
 li:focus {
     background-color: rgb(255, 255, 255, 0.6);
 }
+/*Stäng knappen för menyn*/
 #suggestions .closebtn {
     display: block;
     text-decoration: none;
