@@ -69,14 +69,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
 
         if (minutesDifference < 60) {
-            timestamp.textContent = minutesDifference + " minutes ago";
+            timestamp.textContent = minutesDifference + " minuter sedan";
             timestamp.classList.add("minutes-ago");
         } else if (hoursDifference < 24) {
-            timestamp.textContent = hoursDifference + " hours ago";
+            timestamp.textContent = hoursDifference + " timmar sedan";
             timestamp.classList.add("hours-ago");
         } else {
             const daysDifference = Math.floor(hoursDifference / 24);
-            timestamp.textContent = daysDifference + " days ago";
+            timestamp.textContent = daysDifference + " dagar sedan";
             timestamp.classList.add("days-ago");
         }
     });

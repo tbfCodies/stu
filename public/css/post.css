@@ -1,7 +1,6 @@
 /* Styling när inlägget har en bild. */
 .post {
-  width: 98%;
-  margin: auto;
+  width: 70%;
   max-height: 700px;
   display: flex;
   border-radius: 5px;
@@ -11,7 +10,8 @@
   flex-direction: column;
   overflow: hidden;
   margin-bottom: 20px;
-  margin-top: 30px;
+  margin-top: 60px;
+
 }
 
 /* Probilbild & namn */
@@ -45,6 +45,11 @@
   overflow: hidden;
 }
 
+.post-content p {
+  box-sizing: border-box;
+  padding: 6px;
+}
+
 .post-image {
   width: 100%;
   height: auto;
@@ -55,27 +60,19 @@
 
 /* Gilla, kommentera och tid containern */
 .post-interactions {
+  width: 96%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   white-space: nowrap;
+  box-sizing: border-box;
+  padding: 8px;
+  position: relative;
 }
 
 .interaction-like,
 .interaction-comment {
   margin-right: 35px;
-}
-
-.interaction-comment {
-  margin-top: 0.5%;
-}
-
-.comment-count {
-  margin-top: -7%;
-}
-
-.like-count {
-  margin-left: 10%;
 }
 
 .like-icon,
@@ -84,6 +81,7 @@
   height: 24px;
   margin-right: 5px;
   margin-left: 10px;
+  margin-bottom: 5px;
   border: none;
   outline: none;
 }
@@ -129,10 +127,10 @@
 
 .interaction-time {
   font-size: 15px;
-  position: absolute;
-  left: 77%;
-  transform: translateX(-50%);
   color: #666;
+  position: absolute;
+  right: 0;
+  top: 10px;
 }
 
 /* Beskrivning till inlägg med en bild. */
@@ -156,10 +154,25 @@
   .days-ago {
     margin-right: 50px;
   }
+
+  .post {
+    width: 74%;
+  }
+
+  .interaction-time {
+    font-size: 15px;
+    position: absolute;
+    left: 75%;
+    color: #666;
+  }
+
 }
 
 @media (max-width: 768px) {
   .post {
+    width: 96%;
     margin-top: 10px;
+    margin-left: 1%;
   }
+
 }

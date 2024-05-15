@@ -144,7 +144,7 @@ li:focus {
 .main-content {
     margin-left: 20%;
     width: 60%;
-    padding: 20px;
+    padding: 1em 0px 2em 4em;
     overflow-y: auto;
     height: 100%;
 }
@@ -267,6 +267,7 @@ li:focus {
     #suggestions ul li a {
         font-size: 14px;
     }
+
 }
 
 /* Har fokuserat på 360x800,    */
@@ -431,7 +432,7 @@ li:focus {
 
 @media (min-width: 500px) and (max-width: 768px) {
     .filter {
-        width: 60%; /* Adjust this percentage as needed */
+        width: 68%;
     }
 }
 

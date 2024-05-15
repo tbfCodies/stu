@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html> <!--HTML sida för att skapa ett inlägg och posta det-->
+<html>
+  <!--HTML sida för att skapa ett inlägg och posta det-->
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +10,7 @@
   </head>
   <body>
     <!--Ladda in huvudmenyn på stora skärmar-->
-    <%- include('reuse/huvudmeny') %> <%- include('reuse/header') %>
+    <%- include('reuse/dator-meny') %> <%- include('reuse/mobil-header') %>
 
     <!--Container för att skapa och posta ett inlägg-->
     <div class="skapainlagg-container">
@@ -66,7 +67,7 @@
       </div>
     </div>
     <!--laddar in bottenmenyn på små skärmar-->
-    <%- include('reuse/bottenmeny') %>
+    <%- include('reuse/mobil-meny') %>
     <!--Länk till javascript fil-->
     <script src="js/skapainlagg.js"></script>
   </body>
